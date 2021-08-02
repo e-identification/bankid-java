@@ -1,0 +1,94 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "6.0.0-m2"
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id "com.github.spotbugs" version "4.7.2"
+    id "net.ltgt.errorprone" version "2.0.2"
+    id 'checkstyle'
+    id 'maven-publish'
+}
+
+group 'dev.nicklasw'
+version '0.10.0-SNAPSHOT'
+
+sourceCompatibility=16
+targetCompatibility=16
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
+
+    compileOnly 'com.github.spotbugs:spotbugs-annotations'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    errorprone("com.google.errorprone:error_prone_core:2.8.0")
+}
+
+shadowJar {
+    classifier = ''
+    relocate 'com.fasterxml.jackson', 'shadow.com.fasterxml.jackson'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+spotbugs {
+    toolVersion = '4.3.0'
+}
+
+spotbugsMain {
+    reports {
+        html {
+            enabled = true
+            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Werror"
+    options.errorprone.enabled = true
+    options.errorprone {
+        disableWarningsInGeneratedCode = true
+        ignoreUnknownCheckNames = false
+        allErrorsAsWarnings = false
+        // workaround for: https://github.com/google/error-prone/issues/780
+        errorproneArgs = [
+                '-Xep:UnusedVariable:OFF', // https://github.com/google/error-prone/issues/1266
+                '-Xep:UnusedMethod:OFF', // https://github.com/google/error-prone/issues/1266
+                '-Xep:MissingOverride:OFF',
+                '-Xep:JavaTimeDefaultTimeZone:OFF',
+                '-Xep:SameNameButDifferent:OFF',
+                '-Xep:MissingSummary:OFF', // Until https://github.com/projectlombok/lombok/issues/2730
+                '-Xlint:deprecation',
+        ]
+    }
+}
+
+publishing {
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/NicklasWallgren/bankid-sdk"
+            credentials {
+                username = "NicklasWallgren"
+                password = "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"
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+}
