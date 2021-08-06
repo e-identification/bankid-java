@@ -6,13 +6,15 @@ plugins {
     id "net.ltgt.errorprone" version "2.0.2"
     id 'checkstyle'
     id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
 }
 
 group 'dev.nicklasw'
 version '0.10.0-SNAPSHOT'
 
-sourceCompatibility=16
-targetCompatibility=16
+sourceCompatibility = 16
+targetCompatibility = 16
 
 repositories {
     mavenCentral()
@@ -72,23 +74,93 @@ tasks.withType(JavaCompile) {
     }
 }
 
-publishing {
+task javadocJar(type: Jar) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.delombokTask
+    classifier = 'sources'
+}
+
+
+publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/NicklasWallgren/bankid-sdk"
+            name = "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             credentials {
-                username = "NicklasWallgren"
-                password = "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"
+                username = findProperty('ossrhUsername')
+                password = findProperty('ossrhPassword')
             }
         }
+//        maven {
+//            name = "ossrhSnapshot"
+//            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+//            credentials {
+//                username = findProperty('ossrhUsername')
+//                password = findProperty('ossrhPassword')
+//            }
+//        }
     }
-
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'BankID SDK'
+                artifactId = 'bankid-sdk'
+                packaging = 'jar'
+                description = 'A SDK to interact with the BankID API'
+                url = 'https://github.com/NicklasWallgren/bankid-java-sdk'
+
+                scm {
+                    connection = 'scm:git:git://github.com/NicklasWallgren/bankid-java-sdk.git'
+                    developerConnection = 'scm:git:ssh://github.com/NicklasWallgren/bankid-java-sdk.git'
+                    url = 'https://github.com/NicklasWallgren/bankid-java-sdk'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT Licence'
+                        url = 'https://github.com/NicklasWallgren/bankid-java-sdk/blob/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'nicklas'
+                        name = 'NicklasWallgren'
+                        email = 'nicklas.wallgren@stim.se'
+                    }
+                }
+            }
         }
     }
+}
 
+javadoc {
+    exclude "**/lombok.config"
+    dependsOn delombok
+    failOnError = false
+}
+
+delombok {
+    modulePath.from sourceSets.main.compileClasspath
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+signing {
+    sign publishing.publications.mavenJava
 }

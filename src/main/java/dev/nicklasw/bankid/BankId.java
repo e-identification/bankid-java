@@ -86,7 +86,6 @@ public class BankId {
         return client.sendRequestAsync(request, SignResponse.class);
     }
 
-
     /**
      * Collects the result of a sign or auth order suing the orderRef as reference.
      * <p>
@@ -113,7 +112,6 @@ public class BankId {
     public CompletableFuture<CollectResponse> collectAsync(@NonNull final CollectRequest request) {
         return client.sendRequestAsync(request, CollectResponse.class);
     }
-
 
     /**
      * Cancels an ongoing sign or auth order.

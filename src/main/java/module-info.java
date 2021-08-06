@@ -1,10 +1,11 @@
 module dev.nicklasw.bankid {
     requires static lombok;
+    requires static com.github.spotbugs.annotations;
     requires java.net.http;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
-    requires static com.github.spotbugs.annotations;
+    exports dev.nicklasw.bankid;
     exports dev.nicklasw.bankid.configuration;
     exports dev.nicklasw.bankid.client;
     exports dev.nicklasw.bankid.exceptions;

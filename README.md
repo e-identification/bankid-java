@@ -25,7 +25,7 @@ The artifact is available through Maven Central via Sonatype.
 ### Gradle
 
 ```
-compile 'dev.nicklasw:bankid-sdk:0.10.0'
+implementation 'dev.nicklasw:bankid-sdk:0.10.0'
 ```
 
 ## Changelog
