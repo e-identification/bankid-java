@@ -7,6 +7,9 @@
 SDK to interact with BankID API. It includes support for all the v5.1 features. There are
 some [examples that may be useful](./examples).
 
+## Documentation
+See the project's [Javadoc](https://nicklaswallgren.github.io/bankid-java-sdk/).
+
 ## Installation
 
 The artifact is available through Maven Central via Sonatype.

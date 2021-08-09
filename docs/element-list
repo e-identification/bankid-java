@@ -1,0 +1,11 @@
+module:dev.nicklasw.bankid
+dev.nicklasw.bankid
+dev.nicklasw.bankid.client
+dev.nicklasw.bankid.client.model
+dev.nicklasw.bankid.client.model.serializer
+dev.nicklasw.bankid.client.request
+dev.nicklasw.bankid.client.response
+dev.nicklasw.bankid.client.ssl
+dev.nicklasw.bankid.client.utils
+dev.nicklasw.bankid.configuration
+dev.nicklasw.bankid.exceptions
