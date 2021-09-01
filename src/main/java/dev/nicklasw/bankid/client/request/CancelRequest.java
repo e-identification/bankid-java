@@ -9,7 +9,7 @@ import lombok.NonNull;
 public class CancelRequest implements Request {
 
     /**
-     * The orderRef from the response from authentication or sign.
+     * The orderRef retrieved from a order response.
      */
     @NonNull
     private final String orderRef;

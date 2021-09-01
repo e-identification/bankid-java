@@ -1,12 +1,10 @@
 package dev.nicklasw.bankid.exceptions;
 
 import dev.nicklasw.bankid.client.response.Response;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 
 @Getter
 public class BankIdApiErrorException extends BankIdException {
-    @SuppressFBWarnings
     Response response;
 
     private BankIdApiErrorException(final Response response) {

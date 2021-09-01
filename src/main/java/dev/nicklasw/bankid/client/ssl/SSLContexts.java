@@ -1,17 +1,17 @@
 package dev.nicklasw.bankid.client.ssl;
 
-import lombok.SneakyThrows;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
-import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+
+import lombok.SneakyThrows;
 
 public class SSLContexts {
 
@@ -35,10 +35,8 @@ public class SSLContexts {
     public SSLContexts loadKeyManager(final Path path, final String password) {
         final KeyStore clientStore = KeyStore.getInstance("PKCS12");
 
-        try (var inputStream = Files.newInputStream(path)) {
+        try (final InputStream inputStream = Files.newInputStream(path)) {
             clientStore.load(inputStream, password.toCharArray());
-        } catch (final IOException e) {
-            throw e;
         }
 
         keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());

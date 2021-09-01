@@ -11,7 +11,7 @@ import java.util.Base64;
 
 public class VisibleDataConverter extends StdSerializer<VisibleData> {
 
-    protected VisibleDataConverter() {
+    private VisibleDataConverter() {
         super(VisibleData.class);
     }
 

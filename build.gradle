@@ -11,7 +11,7 @@ plugins {
 }
 
 group 'dev.nicklasw'
-version '0.10.0-SNAPSHOT'
+version '0.11.0'
 
 sourceCompatibility = 16
 targetCompatibility = 16
@@ -21,146 +21,21 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.+'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.+'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.+'
 
-    errorprone("com.google.errorprone:error_prone_core:2.8.0")
+    errorprone 'com.google.errorprone:error_prone_core:2.8.+'
 }
+
+apply from: "gradle/publish.gradle"
+apply from: "gradle/check.gradle"
+apply from: "gradle/javadoc.gradle"
 
 shadowJar {
     classifier = ''
     relocate 'com.fasterxml.jackson', 'shadow.com.fasterxml.jackson'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-spotbugs {
-    toolVersion = '4.3.0'
-}
-
-spotbugsMain {
-    reports {
-        html {
-            enabled = true
-            destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
-            stylesheet = 'fancy-hist.xsl'
-        }
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << "-Werror"
-    options.errorprone.enabled = true
-    options.errorprone {
-        disableWarningsInGeneratedCode = true
-        ignoreUnknownCheckNames = false
-        allErrorsAsWarnings = false
-        // workaround for: https://github.com/google/error-prone/issues/780
-        errorproneArgs = [
-                '-Xep:UnusedVariable:OFF', // https://github.com/google/error-prone/issues/1266
-                '-Xep:UnusedMethod:OFF', // https://github.com/google/error-prone/issues/1266
-                '-Xep:MissingOverride:OFF',
-                '-Xep:JavaTimeDefaultTimeZone:OFF',
-                '-Xep:SameNameButDifferent:OFF',
-                '-Xep:MissingSummary:OFF', // Until https://github.com/projectlombok/lombok/issues/2730
-                '-Xlint:deprecation',
-        ]
-    }
-}
-
-task javadocJar(type: Jar) {
-    from javadoc.destinationDir
-    classifier = 'javadoc'
-}
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.delombokTask
-    classifier = 'sources'
-}
-
-
-publishing {
-    repositories {
-        maven {
-            name = "ossrh"
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = findProperty('ossrhUsername')
-                password = findProperty('ossrhPassword')
-            }
-        }
-//        maven {
-//            name = "ossrhSnapshot"
-//            url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-//            credentials {
-//                username = findProperty('ossrhUsername')
-//                password = findProperty('ossrhPassword')
-//            }
-//        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-
-            pom {
-                name = 'BankID SDK'
-                artifactId = 'bankid-sdk'
-                packaging = 'jar'
-                description = 'A SDK to interact with the BankID API'
-                url = 'https://github.com/NicklasWallgren/bankid-java-sdk'
-
-                scm {
-                    connection = 'scm:git:git://github.com/NicklasWallgren/bankid-java-sdk.git'
-                    developerConnection = 'scm:git:ssh://github.com/NicklasWallgren/bankid-java-sdk.git'
-                    url = 'https://github.com/NicklasWallgren/bankid-java-sdk'
-                }
-
-                licenses {
-                    license {
-                        name = 'MIT Licence'
-                        url = 'https://github.com/NicklasWallgren/bankid-java-sdk/blob/master/LICENSE'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'nicklas'
-                        name = 'NicklasWallgren'
-                        email = 'nicklas.wallgren@stim.se'
-                    }
-                }
-            }
-        }
-    }
-}
-
-javadoc {
-    exclude "**/lombok.config"
-    dependsOn delombok
-    failOnError = false
-}
-
-delombok {
-    modulePath.from sourceSets.main.compileClasspath
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
-}
-
-check.dependsOn jacocoTestReport
-
-signing {
-    sign publishing.publications.mavenJava
 }

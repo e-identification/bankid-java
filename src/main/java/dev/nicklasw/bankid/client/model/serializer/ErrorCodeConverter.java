@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ErrorCodeConverter extends StdDeserializer<ErrorCode> {
 
-    public ErrorCodeConverter() {
+    private ErrorCodeConverter() {
         super(ErrorCode.class);
     }
 

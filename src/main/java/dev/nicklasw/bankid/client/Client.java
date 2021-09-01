@@ -40,7 +40,8 @@ public class Client {
      */
     public static Client of(final Configuration configuration) {
         try {
-            return new Client(HttpClient.newBuilder().sslContext(sslContext(configuration)).build(), configuration);
+            return new Client(HttpClient.newBuilder()
+                .sslContext(sslContext(configuration)).build(), configuration);
         } catch (final Exception e) {
             throw new BankIdException(e);
         }
@@ -69,6 +70,8 @@ public class Client {
 
     /**
      * Sends the given request asynchronously using this client with the given response class.
+     * <p>
+     * Propagates {@link BankIdException} in case of error.
      *
      * @param request       the request to be sent.
      * @param responseClass the response class typel
