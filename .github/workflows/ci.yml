@@ -1,11 +1,9 @@
-on: [push, workflow_dispatch]
+on: [push]
 name: ci
 jobs:
   build:
-    strategy:
-      matrix:
-        runner: [self-hosted, ubuntu-latest]
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 16
