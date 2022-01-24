@@ -8,7 +8,8 @@ public class BankIdApiErrorException extends BankIdException {
     Response response;
 
     private BankIdApiErrorException(final Response response) {
-        super(null);
+        super("Encountered a error from the BankId API");
+
         this.response = response;
     }
 

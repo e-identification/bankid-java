@@ -21,14 +21,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.+'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.+'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.+'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
 
-    errorprone 'com.google.errorprone:error_prone_core:2.8.+'
+    errorprone 'com.google.errorprone:error_prone_core:2.8.1'
 }
 
 apply from: "gradle/publish.gradle"
