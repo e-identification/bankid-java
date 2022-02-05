@@ -21,14 +21,14 @@ The artifact is available through Maven Central via Sonatype.
 <dependency>
     <groupId>dev.nicklasw</groupId>
     <artifactId>bankid-sdk</artifactId>
-    <version>0.10.0</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'dev.nicklasw:bankid-sdk:0.10.0'
+implementation 'dev.nicklasw:bankid-sdk:0.11.0'
 ```
 
 ## Changelog
@@ -62,10 +62,8 @@ import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
 import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
 
-final URI pkcs12ResourceUri = ResourceUtils.optionalUriFrom("test.p12")
-    .orElseThrow();
-final URI caResourceUri = ResourceUtils.optionalUriFrom("ca.test.crt")
-    .orElseThrow();
+final URI pkcs12ResourceUri = ResourceUtils.tryUriFrom("test.p12")
+final URI caResourceUri = ResourceUtils.tryUriFrom("ca.test.crt")
 
 final Configuration configuration = Configuration.builder()
     .baseURL(URL_TEST)

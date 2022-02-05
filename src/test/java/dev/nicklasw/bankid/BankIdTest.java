@@ -167,10 +167,8 @@ class BankIdTest {
     }
 
     private void given() {
-        final URI pkcs12Resource = ResourceUtils.optionalUriFrom("test.p12")
-            .orElseThrow();
-        final URI caResource = ResourceUtils.optionalUriFrom("ca.test.crt")
-            .orElseThrow();
+        final URI pkcs12Resource = ResourceUtils.tryUriFrom("test.p12");
+        final URI caResource = ResourceUtils.tryUriFrom("ca.test.crt");
 
         final Pkcs12 pkcs12 = Pkcs12.of(Path.of(pkcs12Resource), "qwerty123");
 

@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.client.ssl;
+package dev.nicklasw.bankid.client.internal.ssl;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,19 +11,15 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import lombok.NonNull;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
-public class SSLContexts {
-
-    private KeyManagerFactory keyManagerFactory;
-    private TrustManagerFactory trustManagerFactory;
-
-    public static SSLContexts builder() {
-        return new SSLContexts();
-    }
+@UtilityClass
+public class SslUtils {
 
     @SneakyThrows
-    public SSLContext build() {
+    public SSLContext tryCreateSSLContext(final KeyManagerFactory keyManagerFactory, final TrustManagerFactory trustManagerFactory) {
         final SSLContext sslContext = SSLContext.getInstance("TLS");
 
         sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
@@ -32,26 +28,26 @@ public class SSLContexts {
     }
 
     @SneakyThrows
-    public SSLContexts loadKeyManager(final Path path, final String password) {
+    public static KeyManagerFactory tryCreateKeyManager(@NonNull final Path path, @NonNull final String password) {
         final KeyStore clientStore = KeyStore.getInstance("PKCS12");
 
         try (final InputStream inputStream = Files.newInputStream(path)) {
             clientStore.load(inputStream, password.toCharArray());
         }
 
-        keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         keyManagerFactory.init(clientStore, password.toCharArray());
 
-        return this;
+        return keyManagerFactory;
     }
 
     @SneakyThrows
-    public SSLContexts loadTrustManager(final Path path) {
+    public static TrustManagerFactory tryCreateTrustManager(@NonNull final Path path) {
         final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         final X509Certificate caCert = (X509Certificate) certificateFactory.generateCertificate(Files.newInputStream(path));
 
-        trustManagerFactory = TrustManagerFactory
-                .getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        final TrustManagerFactory trustManagerFactory = TrustManagerFactory
+            .getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
         final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null);
@@ -59,7 +55,8 @@ public class SSLContexts {
 
         trustManagerFactory.init(keyStore);
 
-        return this;
+        return trustManagerFactory;
     }
+
 
 }

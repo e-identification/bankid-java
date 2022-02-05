@@ -1,11 +1,20 @@
 package dev.nicklasw.bankid.client;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+import javax.net.ssl.SSLContext;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.nicklasw.bankid.client.request.Request;
 import dev.nicklasw.bankid.client.response.JsonBodyHandler;
 import dev.nicklasw.bankid.client.response.Response;
 import dev.nicklasw.bankid.client.response.ResponseWrapper;
-import dev.nicklasw.bankid.client.ssl.SSLContexts;
+import dev.nicklasw.bankid.client.internal.ssl.SslUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
 import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
@@ -14,15 +23,6 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Client {
@@ -103,10 +103,10 @@ public class Client {
     private static SSLContext sslContext(final Configuration configuration) {
         final Pkcs12 pkcs12 = configuration.getPkcs12();
 
-        return SSLContexts.builder()
-            .loadKeyManager(pkcs12.getPath(), pkcs12.getPassword())
-            .loadTrustManager(configuration.getCertificate())
-            .build();
+        return SslUtils.tryCreateSSLContext(
+            SslUtils.tryCreateKeyManager(pkcs12.getPath(), pkcs12.getPassword()),
+            SslUtils.tryCreateTrustManager(configuration.getCertificate())
+        );
     }
 
     private static <R extends Response> R unwrap(final HttpResponse<ResponseWrapper<R>> response) {

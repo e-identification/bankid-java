@@ -5,7 +5,12 @@ public class BankIdException extends RuntimeException {
         super(cause);
     }
 
+    public BankIdException(final String message) {
+        super(message);
+    }
+
     public BankIdException(final String message, final Throwable cause) {
         super(message, cause);
     }
+
 }

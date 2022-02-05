@@ -13,5 +13,4 @@ module dev.nicklasw.bankid {
     exports dev.nicklasw.bankid.client.request;
     exports dev.nicklasw.bankid.client.model;
     exports dev.nicklasw.bankid.client.utils;
-    exports dev.nicklasw.bankid.client.ssl;
 }
