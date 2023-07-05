@@ -1,3 +1,10 @@
+checkstyle {
+    toolVersion '10.3.2'
+    configFile file("config/checkstyle/checkstyle.xml")
+    sourceSets = [sourceSets.main]
+    ignoreFailures = false
+    maxWarnings = 0
+}
 test {
     useJUnitPlatform()
 }
