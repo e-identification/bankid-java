@@ -1,11 +1,11 @@
 task javadocJar(type: Jar) {
     from javadoc.destinationDir
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.delombokTask
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 publishing {
