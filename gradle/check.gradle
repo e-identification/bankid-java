@@ -10,7 +10,7 @@ test {
 }
 
 spotbugs {
-    toolVersion = '4.3.0'
+    toolVersion = '4.7.3'
 }
 
 spotbugsMain {
