@@ -51,9 +51,6 @@ comments at a maximum of 120 characters of length and code at 120.
 ```java 
 import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
 
-import java.net.URI;
-import java.nio.file.Path;
-
 import dev.nicklasw.bankid.BankId;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
 import dev.nicklasw.bankid.client.response.AuthenticateResponse;
@@ -62,13 +59,13 @@ import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
 import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
 
-final URI pkcs12ResourceUri = ResourceUtils.tryUriFrom("test.p12")
-final URI caResourceUri = ResourceUtils.tryUriFrom("ca.test.crt")
+final InputStream pkcs12Resource = ResourceUtils.tryInputStreamFrom("test.p12");
+final InputStream caResource = ResourceUtils.tryInputStreamFrom("ca.test.crt");
 
 final Configuration configuration = Configuration.builder()
     .baseURL(URL_TEST)
-    .pkcs12(Pkcs12.of(Path.of(pkcs12ResourceUri), "qwerty123"))
-    .certificate(Path.of(caResourceUri))
+    .pkcs12(Pkcs12.of(pkcs12Resource, "qwerty123"))
+    .certificate(caResource)
     .build();
 
 final BankId bankId = BankId.of(configuration);

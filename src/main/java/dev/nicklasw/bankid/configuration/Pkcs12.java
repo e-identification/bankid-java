@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.nio.file.Path;
+import java.io.InputStream;
 
 @Getter
 @ToString
@@ -14,7 +14,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor(staticName = "of")
 public class Pkcs12 {
     @NonNull
-    private final Path path;
+    private final InputStream path;
     @NonNull
     private final String password;
 }

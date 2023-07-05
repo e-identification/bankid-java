@@ -4,7 +4,7 @@ import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URI;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
@@ -167,15 +167,15 @@ class BankIdTest {
     }
 
     private void given() {
-        final URI pkcs12Resource = ResourceUtils.tryUriFrom("test.p12");
-        final URI caResource = ResourceUtils.tryUriFrom("ca.test.crt");
+        final InputStream pkcs12Resource = ResourceUtils.tryInputStreamFrom("test.p12");
+        final InputStream caResource = ResourceUtils.tryInputStreamFrom("ca.test.crt");
 
-        final Pkcs12 pkcs12 = Pkcs12.of(Path.of(pkcs12Resource), "qwerty123");
+        final Pkcs12 pkcs12 = Pkcs12.of(pkcs12Resource, "qwerty123");
 
         final Configuration configuration = Configuration.builder()
             .baseURL(URL_TEST)
             .pkcs12(pkcs12)
-            .certificate(Path.of(caResource))
+            .certificate(caResource)
             .build();
 
         bankId = BankId.of(configuration);

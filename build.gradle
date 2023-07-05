@@ -11,7 +11,7 @@ plugins {
 }
 
 group 'dev.nicklasw'
-version '0.11.0'
+version '0.12.0'
 
 sourceCompatibility = 16
 targetCompatibility = 16
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
 
     compileOnly 'com.github.spotbugs:spotbugs-annotations'
 
@@ -36,6 +36,6 @@ apply from: "gradle/check.gradle"
 apply from: "gradle/javadoc.gradle"
 
 shadowJar {
-    classifier = ''
+    archiveClassifier = ''
     relocate 'com.fasterxml.jackson', 'shadow.com.fasterxml.jackson'
 }

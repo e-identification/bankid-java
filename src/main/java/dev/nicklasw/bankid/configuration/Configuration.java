@@ -1,13 +1,13 @@
 package dev.nicklasw.bankid.configuration;
 
-import java.nio.file.Path;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.io.InputStream;
 
 @Getter
 @Builder
@@ -20,5 +20,5 @@ public class Configuration {
 
     private final String baseURL;
     private final Pkcs12 pkcs12;
-    private final Path certificate;
+    private final InputStream certificate;
 }
