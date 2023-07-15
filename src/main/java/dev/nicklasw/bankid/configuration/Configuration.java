@@ -19,6 +19,7 @@ public class Configuration {
     public static final String URL_PRODUCTION = "https://appapi2.bankid.com/rp/v5.1/";
     public static final String URL_TEST = "https://appapi2.test.bankid.com/rp/v5.1/";
 
+    @NonNull
     private final String baseURL;
     @NonNull
     private final Pkcs12 pkcs12;
