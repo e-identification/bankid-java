@@ -21,14 +21,14 @@ The artifact is available through Maven Central via Sonatype.
 <dependency>
     <groupId>dev.nicklasw</groupId>
     <artifactId>bankid-sdk</artifactId>
-    <version>0.11.0</version>
+    <version>0.12.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'dev.nicklasw:bankid-sdk:0.11.0'
+implementation 'dev.nicklasw:bankid-sdk:0.12.0'
 ```
 
 ## Changelog
