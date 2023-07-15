@@ -6,8 +6,10 @@ import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.nicklasw.bankid.exceptions.BankIdApiUnexpectedResponseException;
+import dev.nicklasw.bankid.internal.Internal;
 import lombok.RequiredArgsConstructor;
 
+@Internal
 @RequiredArgsConstructor
 public class JsonBodyHandler<R extends Response> implements HttpResponse.BodyHandler<ResponseWrapper<R>> {
     private final Class<R> responseClass;
@@ -17,7 +19,6 @@ public class JsonBodyHandler<R extends Response> implements HttpResponse.BodyHan
     public HttpResponse.BodySubscriber<ResponseWrapper<R>> apply(final HttpResponse.ResponseInfo responseInfo) {
         return asJSON(responseClass, responseInfo, objectMapper);
     }
-
 
     private static <W> HttpResponse.BodySubscriber<ResponseWrapper<W>> asJSON(final Class<W> targetType,
                                                                               final HttpResponse.ResponseInfo responseInfo,

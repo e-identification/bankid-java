@@ -14,7 +14,8 @@ import dev.nicklasw.bankid.client.request.Request;
 import dev.nicklasw.bankid.client.response.JsonBodyHandler;
 import dev.nicklasw.bankid.client.response.Response;
 import dev.nicklasw.bankid.client.response.ResponseWrapper;
-import dev.nicklasw.bankid.client.internal.ssl.SslUtils;
+import dev.nicklasw.bankid.internal.Internal;
+import dev.nicklasw.bankid.internal.ssl.SslUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
 import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
@@ -24,6 +25,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@Internal
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Client {
 
@@ -36,9 +38,9 @@ public class Client {
      *
      * @param configuration the configuration
      * @return an {@link Client}
-     * @throws BankIdException in case of error
+     * @throws BankIdException in case of an error
      */
-    public static Client of(final Configuration configuration) {
+    public static Client of(@NonNull final Configuration configuration) {
         try {
             return new Client(HttpClient.newBuilder()
                 .sslContext(sslContext(configuration)).build(), configuration);

@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import dev.nicklasw.bankid.client.model.ErrorCode;
+import dev.nicklasw.bankid.internal.Internal;
 
 import java.io.IOException;
 
+@Internal
 public class ErrorCodeConverter extends StdDeserializer<ErrorCode> {
 
     private ErrorCodeConverter() {

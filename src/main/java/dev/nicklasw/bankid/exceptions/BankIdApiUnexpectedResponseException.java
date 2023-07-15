@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class BankIdApiUnexpectedResponseException extends BankIdException {
-    HttpResponse.ResponseInfo responseInfo;
-    String responseBody;
+    private final HttpResponse.ResponseInfo responseInfo;
+    private final String responseBody;
 
     private BankIdApiUnexpectedResponseException(final HttpResponse.ResponseInfo responseInfo, final String responseBody, final Throwable cause) {
         super(cause);

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class BankIdApiErrorException extends BankIdException {
-    Response response;
+    private final Response response;
 
     private BankIdApiErrorException(final Response response) {
         super("Encountered a error from the BankId API");

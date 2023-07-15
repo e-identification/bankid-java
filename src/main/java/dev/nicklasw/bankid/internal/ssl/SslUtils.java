@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.client.internal.ssl;
+package dev.nicklasw.bankid.internal.ssl;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;

@@ -5,7 +5,7 @@ import dev.nicklasw.bankid.exceptions.BankIdRequirementException;
 public class UserNonVisibleData extends VisibleData {
 
     private UserNonVisibleData(final String content) {
-        this.content = content;
+        super(content);
 
         validateSelf();
     }

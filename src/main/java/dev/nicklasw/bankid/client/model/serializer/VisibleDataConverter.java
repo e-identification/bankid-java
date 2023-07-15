@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import dev.nicklasw.bankid.client.model.VisibleData;
+import dev.nicklasw.bankid.internal.Internal;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+@Internal
 public class VisibleDataConverter extends StdSerializer<VisibleData> {
 
     private VisibleDataConverter() {

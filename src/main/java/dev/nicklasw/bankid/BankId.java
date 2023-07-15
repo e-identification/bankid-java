@@ -1,7 +1,5 @@
 package dev.nicklasw.bankid;
 
-import java.util.concurrent.CompletableFuture;
-
 import dev.nicklasw.bankid.client.Client;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
 import dev.nicklasw.bankid.client.request.CancelRequest;
@@ -16,6 +14,8 @@ import dev.nicklasw.bankid.exceptions.BankIdException;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class BankId {

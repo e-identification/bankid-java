@@ -6,7 +6,7 @@ import lombok.NonNull;
 public class UserVisibleData extends VisibleData {
 
     private UserVisibleData(final String content) {
-        this.content = content;
+        super(content);
 
         validateSelf();
     }

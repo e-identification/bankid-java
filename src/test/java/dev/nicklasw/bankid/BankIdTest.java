@@ -1,13 +1,5 @@
 package dev.nicklasw.bankid;
 
-import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
-
 import dev.nicklasw.bankid.client.model.Requirement;
 import dev.nicklasw.bankid.client.model.UserVisibleData;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
@@ -26,6 +18,13 @@ import dev.nicklasw.bankid.utils.RandomUtils;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
+
+import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BankIdTest {
 
