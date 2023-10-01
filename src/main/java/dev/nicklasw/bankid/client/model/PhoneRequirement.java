@@ -26,7 +26,7 @@ public class PhoneRequirement {
      * "class2" – The transaction must be performed using a card reader where the PIN code is entered
      * on the reader, or a reader of higher class.
      * <p>
-     * "<"no value">" – defaults to "class1". This condition should be combined with a certificatePolicies
+     * "no value" – defaults to "class1". This condition should be combined with a certificatePolicies
      * for a smart card to avoid undefined behaviour.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
