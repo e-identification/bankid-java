@@ -10,6 +10,12 @@ public class UserNonVisibleData extends VisibleData {
         validateSelf();
     }
 
+    /**
+     * Creates a {@link UserNonVisibleData} of the given content.
+     *
+     * @param content must not be {@literal null}, empty or over 200 000 chars.
+     * @throws BankIdRequirementException in case of invalid content.
+     */
     public static UserNonVisibleData of(final String content) {
         return new UserNonVisibleData(content);
     }

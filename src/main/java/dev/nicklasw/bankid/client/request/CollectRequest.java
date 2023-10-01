@@ -1,10 +1,10 @@
 package dev.nicklasw.bankid.client.request;
 
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NonNull;
+import lombok.Value;
 
-@Getter
+@Value
 @Builder
 public class CollectRequest implements Request {
 
@@ -12,7 +12,7 @@ public class CollectRequest implements Request {
      * The orderRef from the response from authentication or sign.
      */
     @NonNull
-    private final String orderRef;
+    String orderRef;
 
     @Override
     public String getUri() {

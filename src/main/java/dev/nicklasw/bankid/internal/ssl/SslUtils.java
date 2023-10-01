@@ -1,5 +1,6 @@
 package dev.nicklasw.bankid.internal.ssl;
 
+import dev.nicklasw.bankid.internal.annotations.Internal;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -13,6 +14,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
+@Internal
 @UtilityClass
 public class SslUtils {
 
@@ -26,9 +28,9 @@ public class SslUtils {
     }
 
     @SneakyThrows
-    public static KeyManagerFactory tryCreateKeyManager(@NonNull final InputStream keystore, @NonNull final String password) {
+    public static KeyManagerFactory tryCreateKeyManager(@NonNull final InputStream keystoreInputStream, @NonNull final String password) {
         final KeyStore clientStore = KeyStore.getInstance("PKCS12");
-        clientStore.load(keystore, password.toCharArray());
+        clientStore.load(keystoreInputStream, password.toCharArray());
 
         final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         keyManagerFactory.init(clientStore, password.toCharArray());
@@ -37,9 +39,9 @@ public class SslUtils {
     }
 
     @SneakyThrows
-    public static TrustManagerFactory tryCreateTrustManager(@NonNull final InputStream certificate) {
+    public static TrustManagerFactory tryCreateTrustManager(@NonNull final InputStream certificateInputStream) {
         final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        final X509Certificate caCert = (X509Certificate) certificateFactory.generateCertificate(certificate);
+        final X509Certificate caCert = (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
 
         final TrustManagerFactory trustManagerFactory = TrustManagerFactory
             .getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -52,6 +54,5 @@ public class SslUtils {
 
         return trustManagerFactory;
     }
-
 
 }

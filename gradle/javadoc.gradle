@@ -1,7 +1,8 @@
 javadoc {
-    exclude "**/lombok.config"
+    exclude "**/lombok.config", "**/module-info.java"
     dependsOn delombok
     failOnError = false
+    destinationDir = layout.projectDirectory.file("docs/").asFile
 }
 
 delombok {

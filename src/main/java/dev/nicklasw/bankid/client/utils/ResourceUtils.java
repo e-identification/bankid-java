@@ -1,7 +1,7 @@
 package dev.nicklasw.bankid.client.utils;
 
 import dev.nicklasw.bankid.exceptions.BankIdException;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import dev.nicklasw.bankid.internal.annotations.Nullable;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -18,12 +18,16 @@ public class ResourceUtils {
      * @throws BankIdException in case of an error
      */
     public static InputStream tryInputStreamFrom(@NonNull final String resourceName) {
-        @Nullable
-        final InputStream resourceAsStream = classLoader().getResourceAsStream(resourceName);
+        @Nullable final InputStream resourceAsStream;
+        try {
+            resourceAsStream = classLoader().getResourceAsStream(resourceName);
 
-        if (resourceAsStream == null) {
-            throw new BankIdException(
-                String.format("The resourceAsStream could not found and/or accessed. %s", resourceName));
+            if (resourceAsStream == null) {
+                throw new BankIdException(
+                    String.format("The resourceAsStream could not found and/or accessed. %s", resourceName));
+            }
+        } catch (SecurityException | IllegalStateException | Error e) {
+            throw new BankIdException(e);
         }
 
         return resourceAsStream;
@@ -35,10 +39,13 @@ public class ResourceUtils {
      * @param resourceName the resource name to be loaded
      */
     public static Optional<InputStream> optionalUriFrom(@NonNull final String resourceName) {
-        @Nullable
-        final InputStream resourceAsStream = classLoader().getResourceAsStream(resourceName);
+        try {
+            @Nullable final InputStream resourceAsStream = classLoader().getResourceAsStream(resourceName);
 
-        return Optional.ofNullable(resourceAsStream);
+            return Optional.ofNullable(resourceAsStream);
+        } catch (SecurityException | IllegalStateException | Error e) {
+            return Optional.empty();
+        }
     }
 
     private static ClassLoader classLoader() {

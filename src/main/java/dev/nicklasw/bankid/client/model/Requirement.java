@@ -2,19 +2,49 @@ package dev.nicklasw.bankid.client.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.NonNull;
+import lombok.Value;
 
-@Getter
+/**
+ * RP may use the requirement parameter to describe how a signature must be created and verified.
+ * A typical use case is to require Mobile BankID or a certain card reader.
+ * A requirement can be set for both auth and sign orders.
+ */
+@Value
 @Builder
 public class Requirement {
+
+    /**
+     * Users are required to sign the transaction with their PIN code, even if they have biometrics activated.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String cardReader;
+    Boolean pinCode;
+
+    /**
+     * "class1" (default) – The transaction must be performed using a card reader where the PIN code is entered
+     * on a computer keyboard, or a card reader of higher class.
+     * <p>
+     * "class2" – The transaction must be performed using a card reader where the PIN code is entered
+     * on the reader, or a reader of higher class.
+     * <p>
+     * "no value" – defaults to "class1". This condition should be combined with a certificatePolicies
+     * for a smart card to avoid undefined behaviour.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String certificatePolicies;
+    CardReader cardReader;
+
+    /**
+     * The oid in certificate policies in the user certificate. List of String.
+     * One wildcard "" is allowed from position 5 and forward i.e. 1.2.752.78.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final String issuerCn;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final Boolean autoStartTokenRequired;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final Boolean allowFingerprint;
+    String certificatePolicies;
+
+    /**
+     * The personal number of the user. String 12 digits. Century must be included.
+     * If the personal number is excluded, the client must be started with the autoStartToken returned in the response.
+     */
+    @NonNull
+    String personalNumber;
+
 }

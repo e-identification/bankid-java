@@ -1,15 +1,22 @@
 package dev.nicklasw.bankid;
 
+import dev.nicklasw.bankid.client.model.CallInitiator;
+import dev.nicklasw.bankid.client.model.PhoneRequirement;
 import dev.nicklasw.bankid.client.model.Requirement;
 import dev.nicklasw.bankid.client.model.UserVisibleData;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
 import dev.nicklasw.bankid.client.request.CancelRequest;
 import dev.nicklasw.bankid.client.request.CollectRequest;
+import dev.nicklasw.bankid.client.request.PhoneAuthenticationRequest;
+import dev.nicklasw.bankid.client.request.PhoneSignRequest;
 import dev.nicklasw.bankid.client.request.SignRequest;
 import dev.nicklasw.bankid.client.response.AuthenticateResponse;
 import dev.nicklasw.bankid.client.response.CancelResponse;
 import dev.nicklasw.bankid.client.response.CollectResponse;
 import dev.nicklasw.bankid.client.response.OrderResponse;
+import dev.nicklasw.bankid.client.response.PhoneAuthenticateResponse;
+import dev.nicklasw.bankid.client.response.PhoneOrderResponse;
+import dev.nicklasw.bankid.client.response.PhoneSignResponse;
 import dev.nicklasw.bankid.client.response.SignResponse;
 import dev.nicklasw.bankid.client.utils.ResourceUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
@@ -36,8 +43,10 @@ class BankIdTest {
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(
             AuthenticationRequest.builder()
-                .personalNumber(personalNumber())
                 .endUserIp("192.168.1.1")
+                .requirement(Requirement.builder()
+                    .personalNumber(personalNumber())
+                    .build())
                 .build());
 
         assertOrder(authenticateResponse);
@@ -50,9 +59,10 @@ class BankIdTest {
 
         final CompletableFuture<AuthenticateResponse> authenticateResponseCompletableFuture = bankId.authenticateAsync(
             AuthenticationRequest.builder()
-                .personalNumber(personalNumber())
                 .endUserIp("192.168.1.1")
-                .requirement(Requirement.builder().build())
+                .requirement(Requirement.builder()
+                    .personalNumber(personalNumber())
+                    .build())
                 .build());
 
         final AuthenticateResponse authenticateResponse = authenticateResponseCompletableFuture.get();
@@ -61,15 +71,45 @@ class BankIdTest {
     }
 
     @Test
+    void phoneAuthenticate() {
+        given();
+
+        final PhoneAuthenticateResponse phoneAuthenticateResponse = bankId.phoneAuthenticate(
+            PhoneAuthenticationRequest.builder()
+                .personalNumber(personalNumber())
+                .callInitiator(CallInitiator.USER)
+                .build());
+
+        assertOrder(phoneAuthenticateResponse);
+    }
+
+    @Test
+    @SneakyThrows
+    void phoneAuthenticateAsync() {
+        given();
+
+        final CompletableFuture<PhoneAuthenticateResponse> authenticateResponseCompletableFuture = bankId.phoneAuthenticateAsync(
+            PhoneAuthenticationRequest.builder()
+                .personalNumber(personalNumber())
+                .callInitiator(CallInitiator.USER)
+                .build());
+
+        final PhoneAuthenticateResponse phoneAuthenticateResponse = authenticateResponseCompletableFuture.get();
+
+        assertOrder(phoneAuthenticateResponse);
+    }
+
+    @Test
     void sign() {
         given();
 
         final SignResponse response = bankId.sign(
             SignRequest.builder()
-                .personalNumber(personalNumber())
                 .endUserIp("192.168.1.1")
                 .userVisibleData(UserVisibleData.of("Hello"))
-                .requirement(Requirement.builder().build())
+                .requirement(Requirement.builder()
+                    .personalNumber(personalNumber())
+                    .build())
                 .build());
 
         assertOrder(response);
@@ -82,10 +122,11 @@ class BankIdTest {
 
         final CompletableFuture<SignResponse> response = bankId.signAsync(
             SignRequest.builder()
-                .personalNumber(personalNumber())
                 .endUserIp("192.168.1.1")
                 .userVisibleData(UserVisibleData.of("Hello"))
-                .requirement(Requirement.builder().build())
+                .requirement(Requirement.builder()
+                    .personalNumber(personalNumber())
+                    .build())
                 .build());
 
         final SignResponse signResponse = response.get();
@@ -94,11 +135,47 @@ class BankIdTest {
     }
 
     @Test
+    void phoneSign() {
+        given();
+
+        final PhoneSignResponse response = bankId.phoneSign(
+            PhoneSignRequest.builder()
+                .personalNumber(personalNumber())
+                .callInitiator(CallInitiator.RP)
+                .userVisibleData(UserVisibleData.of("Hello"))
+                .requirement(PhoneRequirement.builder()
+                    .pinCode(true)
+                    .build())
+                .build());
+
+        assertOrder(response);
+    }
+
+    @Test
+    @SneakyThrows
+    void phoneSignAsync() {
+        given();
+
+        final CompletableFuture<PhoneSignResponse> response = bankId.phoneSignAsync(
+            PhoneSignRequest.builder()
+                .personalNumber(personalNumber())
+                .callInitiator(CallInitiator.RP)
+                .userVisibleData(UserVisibleData.of("Hello"))
+                .requirement(PhoneRequirement.builder()
+                    .pinCode(true)
+                    .build())
+                .build());
+
+        final PhoneSignResponse phoneSignResponse = response.get();
+
+        assertOrder(phoneSignResponse);
+    }
+
+    @Test
     void collect() {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
-            .personalNumber(personalNumber())
             .endUserIp("192.168.1.1")
             .build());
 
@@ -108,7 +185,7 @@ class BankIdTest {
 
         assertNotNull(collectResponse.getOrderRef());
         assertNotNull(collectResponse.getStatus());
-        assertNotNull(collectResponse.getHintCode());
+        assertNotNull(collectResponse.getHint());
     }
 
     @Test
@@ -117,7 +194,6 @@ class BankIdTest {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
-            .personalNumber(personalNumber())
             .endUserIp("192.168.1.1")
             .build());
 
@@ -129,7 +205,7 @@ class BankIdTest {
 
         assertNotNull(collectResponse.getOrderRef());
         assertNotNull(collectResponse.getStatus());
-        assertNotNull(collectResponse.getHintCode());
+        assertNotNull(collectResponse.getHint());
     }
 
     @Test
@@ -137,7 +213,6 @@ class BankIdTest {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
-            .personalNumber(personalNumber())
             .endUserIp("192.168.1.1")
             .build());
 
@@ -152,7 +227,6 @@ class BankIdTest {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
-            .personalNumber(personalNumber())
             .endUserIp("192.168.1.1")
             .build());
 
@@ -187,7 +261,7 @@ class BankIdTest {
 
     private void assertOrder(final OrderResponse response) {
         // No errors should be returned
-        assertTrue(response.optionalErrorCode().isEmpty());
+        assertTrue(response.optionalErrorType().isEmpty());
         assertTrue(response.optionalDetails().isEmpty());
 
         // Validate the order
@@ -197,6 +271,14 @@ class BankIdTest {
         assertNotNull(response.getQrStartToken());
     }
 
+    private void assertOrder(final PhoneOrderResponse response) {
+        // No errors should be returned
+        assertTrue(response.optionalErrorType().isEmpty());
+        assertTrue(response.optionalDetails().isEmpty());
+
+        // Validate the order
+        assertNotNull(response.getOrderRef());
+    }
 
     private static String personalNumber() {
         return String.format("19%02d%02d%02d%02d",
