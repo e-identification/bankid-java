@@ -5,25 +5,29 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import dev.nicklasw.bankid.client.model.ErrorCode;
-import dev.nicklasw.bankid.internal.Internal;
+import dev.nicklasw.bankid.client.model.HintCode;
+import dev.nicklasw.bankid.client.model.HintType;
+import dev.nicklasw.bankid.internal.annotations.Internal;
 
 import java.io.IOException;
 
 @Internal
-public class ErrorCodeConverter extends StdDeserializer<ErrorCode> {
+public class HintTypeConverter extends StdDeserializer<HintType> {
 
-    private ErrorCodeConverter() {
+    HintTypeConverter() {
         super(ErrorCode.class);
     }
 
     @Override
-    public ErrorCode deserialize(final JsonParser jsonParser, final DeserializationContext context) throws IOException {
+    public HintType deserialize(final JsonParser jsonParser, final DeserializationContext context) throws IOException {
         final JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
         if (node.isNull()) {
             return null;
         }
 
-        return ErrorCode.of(node.asText());
+        final String errorCode = node.asText();
+
+        return HintType.of(errorCode, HintCode.of(node.asText()));
     }
 }

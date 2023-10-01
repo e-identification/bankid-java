@@ -1,20 +1,18 @@
 package dev.nicklasw.bankid.configuration;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.Value;
 
 import java.io.InputStream;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor(staticName = "of")
+@Value
+@Builder
+@AllArgsConstructor(staticName = "of")
 public class Pkcs12 {
     @NonNull
-    private final InputStream path;
+    InputStream path;
     @NonNull
-    private final String password;
+    String password;
 }

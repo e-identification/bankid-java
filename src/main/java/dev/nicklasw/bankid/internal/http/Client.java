@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.client;
+package dev.nicklasw.bankid.internal.http;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,10 +11,8 @@ import javax.net.ssl.SSLContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.nicklasw.bankid.client.request.Request;
-import dev.nicklasw.bankid.client.response.JsonBodyHandler;
 import dev.nicklasw.bankid.client.response.Response;
-import dev.nicklasw.bankid.client.response.ResponseWrapper;
-import dev.nicklasw.bankid.internal.Internal;
+import dev.nicklasw.bankid.internal.annotations.Internal;
 import dev.nicklasw.bankid.internal.ssl.SslUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
@@ -44,7 +42,7 @@ public class Client {
         try {
             return new Client(HttpClient.newBuilder()
                 .sslContext(sslContext(configuration)).build(), configuration);
-        } catch (final Exception e) {
+        } catch (final Throwable e) {
             throw new BankIdException(e);
         }
     }

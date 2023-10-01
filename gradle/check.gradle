@@ -5,8 +5,16 @@ checkstyle {
     ignoreFailures = false
     maxWarnings = 0
 }
+
 test {
     useJUnitPlatform()
+
+    testLogging {
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
 }
 
 spotbugs {
@@ -45,8 +53,8 @@ tasks.withType(JavaCompile) {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled true
+        xml.required = true
+        html.required = true
     }
 }
 

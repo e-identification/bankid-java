@@ -1,12 +1,13 @@
-package dev.nicklasw.bankid.client.response;
+package dev.nicklasw.bankid.internal.http;
 
 import java.io.InputStream;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.nicklasw.bankid.client.response.Response;
 import dev.nicklasw.bankid.exceptions.BankIdApiUnexpectedResponseException;
-import dev.nicklasw.bankid.internal.Internal;
+import dev.nicklasw.bankid.internal.annotations.Internal;
 import lombok.RequiredArgsConstructor;
 
 @Internal

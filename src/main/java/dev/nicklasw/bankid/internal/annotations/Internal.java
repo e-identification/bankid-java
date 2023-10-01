@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.internal;
+package dev.nicklasw.bankid.internal.annotations;
 
 /**
  * Annotates a program element (class, method, package, etc) which is internal to the library, not part of

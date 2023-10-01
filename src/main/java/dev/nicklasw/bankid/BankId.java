@@ -1,6 +1,10 @@
 package dev.nicklasw.bankid;
 
-import dev.nicklasw.bankid.client.Client;
+import dev.nicklasw.bankid.client.request.PhoneAuthenticationRequest;
+import dev.nicklasw.bankid.client.request.PhoneSignRequest;
+import dev.nicklasw.bankid.client.response.PhoneAuthenticateResponse;
+import dev.nicklasw.bankid.client.response.PhoneSignResponse;
+import dev.nicklasw.bankid.internal.http.Client;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
 import dev.nicklasw.bankid.client.request.CancelRequest;
 import dev.nicklasw.bankid.client.request.CollectRequest;
@@ -60,7 +64,33 @@ public class BankId {
     }
 
     /**
-     * Initiates an sign order.
+     * Initiates an authentication order when the user is talking to the RP over the phone.
+     * <p>
+     * Use the collect method to query the status of the order.
+     * If the request is successful, the orderRef and autoStartToken is returned.
+     *
+     * @param request the authentication request
+     * @throws BankIdException in case of an error
+     */
+    public PhoneAuthenticateResponse phoneAuthenticate(@NonNull final PhoneAuthenticationRequest request) {
+        return client.sendRequest(request, PhoneAuthenticateResponse.class);
+    }
+
+    /**
+     * Initiates an authentication order asynchronous when the user is talking to the RP over the phone.
+     * <p>
+     * Use the collect method to query the status of the order.
+     * If the request is successful, the orderRef and autoStartToken is returned.
+     *
+     * @param request the authentication request
+     * @throws BankIdException in case of an error
+     */
+    public CompletableFuture<PhoneAuthenticateResponse> phoneAuthenticateAsync(@NonNull final PhoneAuthenticationRequest request) {
+        return client.sendRequestAsync(request, PhoneAuthenticateResponse.class);
+    }
+
+    /**
+     * Initiates a sign order.
      * <p>
      * Use the collect method to query the status of the order.
      * If the request is successful, the orderRef and autoStartToken is returned.
@@ -73,7 +103,7 @@ public class BankId {
     }
 
     /**
-     * Initiates an sign order asynchronous.
+     * Initiates a sign order asynchronous.
      * <p>
      * Use the collect method to query the status of the order.
      * If the request is successful, the orderRef and autoStartToken is returned.
@@ -84,6 +114,33 @@ public class BankId {
      */
     public CompletableFuture<SignResponse> signAsync(@NonNull final SignRequest request) {
         return client.sendRequestAsync(request, SignResponse.class);
+    }
+
+
+    /**
+     * Initiates a sign order over the phone.
+     * <p>
+     * Use the collect method to query the status of the order.
+     * If the request is successful, the orderRef and autoStartToken is returned.
+     *
+     * @param request the sign request
+     * @throws BankIdException in case of an error
+     */
+    public PhoneSignResponse phoneSign(@NonNull final PhoneSignRequest request) {
+        return client.sendRequest(request, PhoneSignResponse.class);
+    }
+
+    /**
+     * Initiates a sign order over the phone.
+     * <p>
+     * Use the collect method to query the status of the order.
+     * If the request is successful, the orderRef and autoStartToken is returned.
+     *
+     * @param request the sign request
+     * @throws BankIdException in case of an error
+     */
+    public CompletableFuture<PhoneSignResponse> phoneSignAsync(@NonNull final PhoneSignRequest request) {
+        return client.sendRequestAsync(request, PhoneSignResponse.class);
     }
 
     /**

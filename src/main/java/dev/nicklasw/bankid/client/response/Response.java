@@ -1,13 +1,13 @@
 package dev.nicklasw.bankid.client.response;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.nicklasw.bankid.client.model.ErrorCode;
+import dev.nicklasw.bankid.client.model.ErrorType;
+import dev.nicklasw.bankid.internal.annotations.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import edu.umd.cs.findbugs.annotations.Nullable;
+
+import java.util.Optional;
 
 @ToString
 @NoArgsConstructor(force = true)
@@ -15,18 +15,18 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 public class Response {
     @Nullable
     @JsonProperty("errorCode")
-    protected ErrorCode errorCode;
+    protected ErrorType error;
 
     @Nullable
     @JsonProperty("details")
     protected String details;
 
     public boolean hasErrorCode() {
-        return errorCode != null;
+        return error != null;
     }
 
-    public Optional<ErrorCode> optionalErrorCode() {
-        return Optional.ofNullable(errorCode);
+    public Optional<ErrorType> optionalErrorType() {
+        return Optional.ofNullable(error);
     }
 
     public Optional<String> optionalDetails() {

@@ -11,6 +11,12 @@ public class UserVisibleData extends VisibleData {
         validateSelf();
     }
 
+    /**
+     * Creates a {@link UserVisibleData} of the given content.
+     *
+     * @param content must not be {@literal null}, empty or over 40 000 chars.
+     * @throws BankIdRequirementException in case of invalid content.
+     */
     public static UserVisibleData of(@NonNull final String content) {
         return new UserVisibleData(content);
     }
@@ -21,7 +27,7 @@ public class UserVisibleData extends VisibleData {
         }
 
         if (content.length() > 40_000) {
-            throw new BankIdRequirementException("UserVisibleData content cannot exceed 200_000 in length");
+            throw new BankIdRequirementException("UserVisibleData content cannot exceed 40_000 in length");
         }
     }
 }
