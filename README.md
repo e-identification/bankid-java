@@ -4,7 +4,7 @@
 
 # BankID SDK
 
-SDK to interact with BankID API. It includes support for all the v5.1 features. There are
+SDK to interact with BankID API. It includes support for all the v6.0 features. There are
 some [examples that may be useful](./examples).
 
 ## Documentation
@@ -21,14 +21,14 @@ The artifact is available through Maven Central via Sonatype.
 <dependency>
     <groupId>dev.nicklasw</groupId>
     <artifactId>bankid-sdk</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'dev.nicklasw:bankid-sdk:0.12.0'
+implementation 'dev.nicklasw:bankid-sdk:0.13.0'
 ```
 
 ## Changelog
