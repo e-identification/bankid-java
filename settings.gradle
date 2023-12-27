@@ -1,2 +1,5 @@
-rootProject.name = 'bankid-sdk'
+pluginManagement {
+    includeBuild("gradle/plugins/quality")
+}
 
+rootProject.name = 'bankid-sdk'

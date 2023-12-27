@@ -2,7 +2,7 @@ package dev.nicklasw.bankid.client.model;
 
 import dev.nicklasw.bankid.exceptions.BankIdRequirementException;
 
-public class UserNonVisibleData extends VisibleData {
+public final class UserNonVisibleData extends VisibleData {
 
     private UserNonVisibleData(final String content) {
         super(content);

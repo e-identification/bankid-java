@@ -3,7 +3,7 @@ package dev.nicklasw.bankid.client.model;
 import dev.nicklasw.bankid.exceptions.BankIdRequirementException;
 import lombok.NonNull;
 
-public class UserVisibleData extends VisibleData {
+public final class UserVisibleData extends VisibleData {
 
     private UserVisibleData(final String content) {
         super(content);

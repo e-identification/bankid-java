@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @UtilityClass
@@ -27,7 +28,7 @@ public class QRCodeUtil {
      * @throws BankIdException in case of an error.
      */
     public static String qrCode(final String qrStartToken, final String qrStartSecret, final LocalDateTime orderTime) {
-        final String qrTime = Long.toString(orderTime.until(LocalDateTime.now(), ChronoUnit.SECONDS));
+        final String qrTime = Long.toString(orderTime.until(LocalDateTime.now(ZoneId.systemDefault()), ChronoUnit.SECONDS));
 
         try {
             final Mac mac = Mac.getInstance("HmacSHA256");
