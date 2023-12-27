@@ -1,9 +1,9 @@
 package dev.nicklasw.bankid.client.utils;
 
 import dev.nicklasw.bankid.exceptions.BankIdException;
-import dev.nicklasw.bankid.internal.annotations.Nullable;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+import org.jspecify.annotations.Nullable;
 
 import java.io.InputStream;
 import java.util.Optional;

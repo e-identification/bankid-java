@@ -1,6 +1,7 @@
 module dev.nicklasw.bankid {
     requires static lombok;
     requires static com.github.spotbugs.annotations;
+    requires static org.jspecify;
 
     requires java.net.http;
     requires com.fasterxml.jackson.annotation;

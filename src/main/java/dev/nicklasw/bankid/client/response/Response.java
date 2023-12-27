@@ -2,10 +2,10 @@ package dev.nicklasw.bankid.client.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.nicklasw.bankid.client.model.ErrorType;
-import dev.nicklasw.bankid.internal.annotations.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
