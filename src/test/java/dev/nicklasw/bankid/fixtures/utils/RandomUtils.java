@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.utils;
+package dev.nicklasw.bankid.fixtures.utils;
 
 import java.util.Random;
 
