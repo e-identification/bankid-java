@@ -21,7 +21,7 @@ import dev.nicklasw.bankid.client.response.SignResponse;
 import dev.nicklasw.bankid.client.utils.ResourceUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
-import dev.nicklasw.bankid.utils.RandomUtils;
+import dev.nicklasw.bankid.fixtures.utils.RandomUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class BankIdTest {
+class BankIdIntegrationTest extends IntegrationTest {
 
     private BankId bankId;
 

@@ -1,4 +1,4 @@
-package dev.nicklasw.bankid.utils;
+package dev.nicklasw.bankid.fixtures.utils;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
