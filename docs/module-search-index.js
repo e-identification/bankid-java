@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"dev.nicklasw.bankid"}];updateSearchResults();
+moduleSearchIndex = [{"l":"dev.eidentification.bankid"}];updateSearchResults();

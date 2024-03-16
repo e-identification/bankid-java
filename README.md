@@ -19,16 +19,16 @@ The artifact is available through Maven Central via Sonatype.
 ```xml
 
 <dependency>
-    <groupId>dev.nicklasw</groupId>
+    <groupId>dev.eidentification</groupId>
     <artifactId>bankid-sdk</artifactId>
-    <version>0.13.0</version>
+    <version>0.15.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'dev.nicklasw:bankid-sdk:0.13.0'
+implementation 'dev.eidentification:bankid-sdk:0.15.0'
 ```
 
 ## Changelog
@@ -49,15 +49,15 @@ comments at a maximum of 120 characters of length and code at 120.
 ## General Usage
 
 ```java 
-import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
+import static dev.eidentification.configuration.bankid.Configuration.URL_TEST;
 
-import dev.nicklasw.bankid.BankId;
-import dev.nicklasw.bankid.client.request.AuthenticationRequest;
-import dev.nicklasw.bankid.client.response.AuthenticateResponse;
-import dev.nicklasw.bankid.client.utils.ResourceUtils;
-import dev.nicklasw.bankid.configuration.Configuration;
-import dev.nicklasw.bankid.configuration.Pkcs12;
-import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
+import dev.eidentification.bankid.BankId;
+import dev.eidentification.request.client.bankid.AuthenticationRequest;
+import dev.eidentification.response.client.bankid.AuthenticateResponse;
+import dev.eidentification.utils.client.bankid.ResourceUtils;
+import dev.eidentification.configuration.bankid.Configuration;
+import dev.eidentification.configuration.bankid.Pkcs12;
+import dev.eidentification.exceptions.bankid.BankIdApiErrorException;
 
 final InputStream pkcs12Resource = ResourceUtils.tryInputStreamFrom("test.p12");
 final InputStream caResource = ResourceUtils.tryInputStreamFrom("ca.test.crt");

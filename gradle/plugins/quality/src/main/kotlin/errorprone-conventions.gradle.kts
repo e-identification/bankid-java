@@ -50,7 +50,7 @@ tasks.register("errorProne", JavaCompile::class) {
 
         nullaway {
             error()
-            annotatedPackages.add("dev.nicklasw.bankid")
+            annotatedPackages.add("dev.eidentification.bankid")
         }
     }
 }
