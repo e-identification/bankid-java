@@ -1,14 +1,17 @@
 package dev.nicklasw.bankid.client.response;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.Value;
+import java.util.StringJoiner;
 
-@Value
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class CancelResponse extends Response {
+/**
+ * Represents a response from cancelling an ongoing sign or auth order.
+ */
+public final class CancelResponse implements Response {
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", CancelResponse.class.getSimpleName() + "[", "]")
+            .add("super=" + super.toString())
+            .toString();
+    }
+
 }

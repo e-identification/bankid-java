@@ -1,20 +1,30 @@
 package dev.nicklasw.bankid.exceptions;
 
-import dev.nicklasw.bankid.client.response.Response;
-import lombok.Getter;
+import dev.nicklasw.bankid.client.response.ErrorResponse;
 
-@Getter
-public class BankIdApiErrorException extends BankIdException {
-    private final Response response;
+/**
+ * BankIdApiErrorException is a subclass of BankIdException that represents an error encountered
+ * from the BankId API. It contains the error response from the API.
+ */
+public final class BankIdApiErrorException extends BankIdException {
+    private final ErrorResponse response;
 
-    private BankIdApiErrorException(final Response response) {
+    private BankIdApiErrorException(final ErrorResponse response) {
         super("Encountered a error from the BankId API");
 
         this.response = response;
     }
 
-    public static BankIdApiErrorException of(final Response response) {
+    public static BankIdApiErrorException of(final ErrorResponse response) {
         return new BankIdApiErrorException(response);
     }
 
+    /**
+     * Retrieves the error response associated with the BankIdApiErrorException.
+     *
+     * @return The error response associated with this exception.
+     */
+    public ErrorResponse getResponse() {
+        return this.response;
+    }
 }

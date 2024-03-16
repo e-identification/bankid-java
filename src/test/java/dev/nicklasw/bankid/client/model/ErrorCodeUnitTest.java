@@ -1,6 +1,7 @@
 package dev.nicklasw.bankid.client.model;
 
 import dev.nicklasw.bankid.UnitTest;
+import dev.nicklasw.bankid.client.model.enums.ErrorCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

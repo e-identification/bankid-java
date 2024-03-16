@@ -1,58 +1,61 @@
 package dev.nicklasw.bankid.internal.http;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.nicklasw.bankid.client.response.ErrorResponse;
+import dev.nicklasw.bankid.client.response.Response;
+import dev.nicklasw.bankid.exceptions.BankIdApiErrorException;
+import dev.nicklasw.bankid.exceptions.BankIdApiUnexpectedResponseException;
+import dev.nicklasw.bankid.internal.annotations.Internal;
+
 import java.io.InputStream;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.nicklasw.bankid.client.response.Response;
-import dev.nicklasw.bankid.exceptions.BankIdApiUnexpectedResponseException;
-import dev.nicklasw.bankid.internal.annotations.Internal;
-import lombok.RequiredArgsConstructor;
-
 @Internal
-@RequiredArgsConstructor
-public class JsonBodyHandler<R extends Response> implements HttpResponse.BodyHandler<ResponseWrapper<R>> {
-    private final Class<R> responseClass;
+public class JsonBodyHandler<R extends Response, E extends ErrorResponse> implements HttpResponse.BodyHandler<R> {
+    private static final int HTTP_STATUS_OK = 200;
+
+    private final Class<R> responseClazz;
+    private final Class<E> errorResponseClazz;
     private final ObjectMapper objectMapper;
 
-    @Override
-    public HttpResponse.BodySubscriber<ResponseWrapper<R>> apply(final HttpResponse.ResponseInfo responseInfo) {
-        return asJSON(responseClass, responseInfo, objectMapper);
-    }
-
-    private static <W> HttpResponse.BodySubscriber<ResponseWrapper<W>> asJSON(final Class<W> targetType,
-                                                                              final HttpResponse.ResponseInfo responseInfo,
-                                                                              final ObjectMapper objectMapper) {
-        final HttpResponse.BodySubscriber<InputStream> upstream = HttpResponse.BodySubscribers.ofInputStream();
-
-        return HttpResponse.BodySubscribers.mapping(
-            upstream,
-            inputStream -> toResponseWrapperOfType(inputStream, targetType, responseInfo, objectMapper));
+    JsonBodyHandler(final Class<R> responseClazz, final Class<E> errorResponseClazz, final ObjectMapper objectMapper) {
+        this.responseClazz = responseClazz;
+        this.errorResponseClazz = errorResponseClazz;
+        this.objectMapper = objectMapper;
     }
 
     /**
-     * We are wrapping the response inorder to ensure that the execution thread is not blocked.
-     * <p>
-     * To read more about the reasoning behind wrapping the response see
-     * https://bugs.openjdk.java.net/browse/JDK-8217627
-     * https://bugs.openjdk.java.net/browse/JDK-8217264
+     * Returns a {@link HttpResponse.BodySubscriber BodySubscriber}.
+     *
+     * @param responseInfo the response info
+     * @return the body subscriber
+     * @throws BankIdApiErrorException              in case of an api error
+     * @throws BankIdApiUnexpectedResponseException in case of an unexpected api error
      */
-    private static <W> ResponseWrapper<W> toResponseWrapperOfType(final InputStream inputStream,
-                                                                  final Class<W> targetType,
-                                                                  final HttpResponse.ResponseInfo responseInfo,
-                                                                  final ObjectMapper objectMapper) {
-        return () -> {
-            String body = "";
+    @Override
+    public HttpResponse.BodySubscriber<R> apply(final HttpResponse.ResponseInfo responseInfo) {
+        final HttpResponse.BodySubscriber<InputStream> upstream = HttpResponse.BodySubscribers.ofInputStream();
 
-            try (final InputStream stream = inputStream) {
-                body = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        if (responseInfo.statusCode() == HTTP_STATUS_OK) {
+            return HttpResponse.BodySubscribers.mapping(upstream, inputStream -> inputStreamTo(responseClazz, responseInfo, inputStream));
+        }
 
-                return objectMapper.readValue(body, targetType);
-            } catch (final Exception e) {
-                throw BankIdApiUnexpectedResponseException.of(responseInfo, body, e);
-            }
-        };
+        return HttpResponse.BodySubscribers.mapping(upstream, inputStream -> {
+            throw BankIdApiErrorException.of(inputStreamTo(errorResponseClazz, responseInfo, inputStream));
+        });
+    }
+
+    private <T> T inputStreamTo(final Class<T> targetType, final HttpResponse.ResponseInfo responseInfo, final InputStream inputStream) {
+        String body = "";
+
+        try (final InputStream stream = inputStream) {
+            body = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+
+            return objectMapper.readValue(body, targetType);
+        } catch (final Exception e) {
+            throw BankIdApiUnexpectedResponseException.of(responseInfo, body, e);
+        }
     }
 
 }

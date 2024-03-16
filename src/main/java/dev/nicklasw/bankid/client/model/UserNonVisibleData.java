@@ -2,7 +2,9 @@ package dev.nicklasw.bankid.client.model;
 
 import dev.nicklasw.bankid.exceptions.BankIdRequirementException;
 
-public class UserNonVisibleData extends VisibleData {
+import java.util.StringJoiner;
+
+public final class UserNonVisibleData extends VisibleData {
 
     private UserNonVisibleData(final String content) {
         super(content);
@@ -11,10 +13,11 @@ public class UserNonVisibleData extends VisibleData {
     }
 
     /**
-     * Creates a {@link UserNonVisibleData} of the given content.
+     * Creates an instance of UserNonVisibleData with the given content.
      *
-     * @param content must not be {@literal null}, empty or over 200 000 chars.
-     * @throws BankIdRequirementException in case of invalid content.
+     * @param content the content of the UserNonVisibleData
+     * @return an instance of UserNonVisibleData
+     * @throws BankIdRequirementException if the content is empty or exceeds the maximum length of 200,000 characters
      */
     public static UserNonVisibleData of(final String content) {
         return new UserNonVisibleData(content);
@@ -29,4 +32,12 @@ public class UserNonVisibleData extends VisibleData {
             throw new BankIdRequirementException("UserNonVisibleData content cannot exceed 200_000 in length");
         }
     }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", UserNonVisibleData.class.getSimpleName() + "[", "]")
+            .add("super='" + super.toString() + "'")
+            .toString();
+    }
+
 }

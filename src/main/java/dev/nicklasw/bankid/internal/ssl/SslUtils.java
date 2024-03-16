@@ -1,25 +1,28 @@
 package dev.nicklasw.bankid.internal.ssl;
 
 import dev.nicklasw.bankid.internal.annotations.Internal;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 
 @Internal
-@UtilityClass
-public class SslUtils {
+public final class SslUtils {
 
-    @SneakyThrows
-    public SSLContext tryCreateSSLContext(final KeyManagerFactory keyManagerFactory, final TrustManagerFactory trustManagerFactory) {
+    private SslUtils() {
+
+    }
+
+    public static SSLContext tryCreateSSLContext(final KeyManagerFactory keyManagerFactory, final TrustManagerFactory trustManagerFactory)
+        throws GeneralSecurityException {
         final SSLContext sslContext = SSLContext.getInstance("TLS");
 
         sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
@@ -27,8 +30,11 @@ public class SslUtils {
         return sslContext;
     }
 
-    @SneakyThrows
-    public static KeyManagerFactory tryCreateKeyManager(@NonNull final InputStream keystoreInputStream, @NonNull final String password) {
+    public static KeyManagerFactory tryCreateKeyManager(final InputStream keystoreInputStream, final String password)
+        throws GeneralSecurityException, IOException {
+        Objects.requireNonNull(keystoreInputStream);
+        Objects.requireNonNull(password);
+
         final KeyStore clientStore = KeyStore.getInstance("PKCS12");
         clientStore.load(keystoreInputStream, password.toCharArray());
 
@@ -38,8 +44,10 @@ public class SslUtils {
         return keyManagerFactory;
     }
 
-    @SneakyThrows
-    public static TrustManagerFactory tryCreateTrustManager(@NonNull final InputStream certificateInputStream) {
+    public static TrustManagerFactory tryCreateTrustManager(final InputStream certificateInputStream)
+        throws GeneralSecurityException, IOException {
+        Objects.requireNonNull(certificateInputStream);
+
         final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         final X509Certificate caCert = (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
 

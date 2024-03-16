@@ -1,4 +1,6 @@
 .gradle
 .idea
+.DS_Store
 build
 lib
+TODO.md
