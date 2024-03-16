@@ -1,7 +1,7 @@
 import org.jspecify.annotations.NullMarked;
 
 /**
- * The module "dev.nicklasw.bankid" is responsible for managing integrations with the BankID service.
+ * The module "dev.eidentification.bankid" is responsible for managing integrations with the BankID service.
  * <p>
  * This module exports several packages that contain classes related to BankID integration,
  * including client response models, client request models, client utility classes,
@@ -18,7 +18,7 @@ import org.jspecify.annotations.NullMarked;
  * providing information about nullability in the exported types.
  **/
 @NullMarked
-module dev.nicklasw.bankid {
+module dev.eidentification.bankid {
     requires static org.jspecify;
 
     requires java.net.http;
@@ -26,18 +26,18 @@ module dev.nicklasw.bankid {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
 
-    exports dev.nicklasw.bankid;
+    exports dev.eidentification.bankid;
 
-    exports dev.nicklasw.bankid.client.response;
-    exports dev.nicklasw.bankid.client.request;
-    exports dev.nicklasw.bankid.client.model;
-    exports dev.nicklasw.bankid.client.model.enums;
-    exports dev.nicklasw.bankid.client.model.serializer;
-    exports dev.nicklasw.bankid.client.utils;
+    exports dev.eidentification.bankid.client.response;
+    exports dev.eidentification.bankid.client.request;
+    exports dev.eidentification.bankid.client.model;
+    exports dev.eidentification.bankid.client.model.enums;
+    exports dev.eidentification.bankid.client.model.serializer;
+    exports dev.eidentification.bankid.client.utils;
 
-    exports dev.nicklasw.bankid.configuration;
-    exports dev.nicklasw.bankid.exceptions;
+    exports dev.eidentification.bankid.configuration;
+    exports dev.eidentification.bankid.exceptions;
 
-    opens dev.nicklasw.bankid.client.model.serializer to com.fasterxml.jackson.databind;
-    opens dev.nicklasw.bankid.client.response to com.fasterxml.jackson.databind;
+    opens dev.eidentification.bankid.client.model.serializer to com.fasterxml.jackson.databind;
+    opens dev.eidentification.bankid.client.response to com.fasterxml.jackson.databind;
 }

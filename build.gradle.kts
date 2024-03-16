@@ -7,7 +7,7 @@ plugins {
     id("publish-conventions")
 }
 
-group = "dev.nicklasw"
+group = "dev.eidentification"
 version = "0.15.0-SNAPSHOT"
 
 java {
