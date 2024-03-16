@@ -30,16 +30,16 @@ publishing {
                 name = "BankID SDK"
                 artifactId = "bankid-sdk"
                 description = "A SDK to interact with the BankID API"
-                url = "https://github.com/NicklasWallgren/bankid-java-sdk"
+                url = "https://github.com/NicklasWallgren/bankid-java"
                 scm {
-                    connection = "scm:git:git://github.com/NicklasWallgren/bankid-java-sdk.git"
-                    developerConnection = "scm:git:ssh://github.com/NicklasWallgren/bankid-java-sdk.git"
-                    url = "https://github.com/NicklasWallgren/bankid-java-sdk"
+                    connection = "scm:git:git://github.com/NicklasWallgren/bankid-java.git"
+                    developerConnection = "scm:git:ssh://github.com/NicklasWallgren/bankid-java.git"
+                    url = "https://github.com/NicklasWallgren/bankid-java"
                 }
                 licenses {
                     license {
                         name = "MIT Licence"
-                        url = "https://github.com/NicklasWallgren/bankid-java-sdk/blob/master/LICENSE"
+                        url = "https://github.com/NicklasWallgren/bankid-java/blob/master/LICENSE"
                     }
                 }
                 developers {
