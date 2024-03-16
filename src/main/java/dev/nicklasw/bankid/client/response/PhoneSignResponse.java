@@ -1,15 +1,27 @@
 package dev.nicklasw.bankid.client.response;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Value
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class PhoneSignResponse extends PhoneOrderResponse {
+import java.util.StringJoiner;
+
+/**
+ * The PhoneSignResponse class represents the response from a phone sign order.
+ *
+ * @see PhoneOrderResponse
+ */
+public final class PhoneSignResponse extends PhoneOrderResponse {
+
+    @JsonCreator
+    PhoneSignResponse(@JsonProperty("orderRef") final String orderRef) {
+        super(orderRef);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PhoneSignResponse.class.getSimpleName() + "[", "]")
+            .add("super='" + super.toString() + "'")
+            .toString();
+    }
 
 }

@@ -4,39 +4,41 @@ plugins {
     id("java-library")
     id("java-gradle-plugin")
     id("net.ltgt.errorprone")
+    id("net.ltgt.nullaway")
 }
 
 dependencies {
-    errorprone("com.google.errorprone:error_prone_core:2.18.0")
+    errorprone("com.google.errorprone:error_prone_core:2.25.0")
+    errorprone("com.uber.nullaway:nullaway:0.10.24")
 }
 
 // Disable error prone by default
-@Suppress("UnstableApiUsage")
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone.isEnabled = false
 }
 
+@Suppress("UnstableApiUsage")
 configurations {
-    val iterable = Iterable {
+    val classpathsIterable = Iterable {
         iterator {
             yield(compileClasspath.get())
             yield(runtimeClasspath.get())
         }
     }
-
-    errorprone.get().setExtendsFrom(iterable)
+    errorprone.get().setExtendsFrom(classpathsIterable)
 }
 
-@Suppress("UnstableApiUsage")
+val errorproneConfig = configurations.errorprone.get()
+
 tasks.register("errorProne", JavaCompile::class) {
     options.isFork = true
     options.isIncremental = true
-    options.annotationProcessorPath = configurations.errorprone.get()
+    options.annotationProcessorPath = errorproneConfig
     options.compilerArgs.addAll(arrayOf("-Werror"))
 
     source = fileTree("src/main/java")
-    classpath = configurations.errorprone.get()
-    destinationDirectory.set(file("$buildDir/classes/errorprone"))
+    classpath = errorproneConfig
+    destinationDirectory.set(file("${layout.buildDirectory}/classes/errorprone"))
     outputs.upToDateWhen() { false }
 
     options.errorprone {
@@ -45,7 +47,13 @@ tasks.register("errorProne", JavaCompile::class) {
         ignoreUnknownCheckNames = false
         allErrorsAsWarnings = false
         errorproneArgs = listOf("-Xep:MissingSummary:OFF", "-Xlint:deprecation")
+
+        nullaway {
+            error()
+            annotatedPackages.add("dev.nicklasw.bankid")
+        }
     }
 }
+
 
 tasks.named("check").get().dependsOn("errorProne")

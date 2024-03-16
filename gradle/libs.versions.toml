@@ -1,16 +1,12 @@
 [versions]
 jackson = "2.16.0"
-mccue-jsr305 = "3.0.2"
 jspecify = "0.3.0"
 junit-jupiter = "5.10.1"
 mockito-jupiter = "5.8.0"
 mockito-inline = "5.2.0"
-lombok = "1.18.30"
-findbugs = "3.0.1"
 
 [libraries]
 jackson-core-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
-mccue-jsr305 = { module = "dev.mccue:jsr305", version.ref = "mccue-jsr305" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
 #junit5 = { module = "org.junit:junit-bom", version.ref = "junit-jupiter" }
@@ -22,6 +18,3 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 
 mockito-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito-jupiter" }
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito-inline" }
-
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
-findbugs-annotations = { module = "com.google.code.findbugs:findbugs-annotations", version.ref = "findbugs" }

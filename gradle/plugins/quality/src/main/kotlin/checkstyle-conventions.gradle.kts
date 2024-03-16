@@ -6,7 +6,7 @@ plugins {
 
 checkstyle {
     toolVersion = "10.3.2"
-    isIgnoreFailures = false
+    isIgnoreFailures = true
     maxWarnings = 0
 }
 

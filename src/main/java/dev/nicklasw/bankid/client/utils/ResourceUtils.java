@@ -1,23 +1,28 @@
 package dev.nicklasw.bankid.client.utils;
 
 import dev.nicklasw.bankid.exceptions.BankIdException;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 import org.jspecify.annotations.Nullable;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Optional;
 
-@UtilityClass
-public class ResourceUtils {
+public final class ResourceUtils {
+
+    private ResourceUtils() {
+
+    }
 
     /**
-     * Tries to load a resource by name and returns a {@link InputStream}.
+     * Tries to retrieve an input stream from the given resource name.
      *
-     * @param resourceName the resource name to be loaded
-     * @throws BankIdException in case of an error
+     * @param resourceName the name of the resource to retrieve
+     * @return the input stream of the resource
+     * @throws BankIdException if the resource could not be found or accessed
      */
-    public static InputStream tryInputStreamFrom(@NonNull final String resourceName) {
+    public static InputStream tryInputStreamFrom(final String resourceName) {
+        Objects.requireNonNull(resourceName);
+
         @Nullable final InputStream resourceAsStream;
         try {
             resourceAsStream = classLoader().getResourceAsStream(resourceName);
@@ -34,11 +39,14 @@ public class ResourceUtils {
     }
 
     /**
-     * Loads a resource by name. Returns a {@link Optional#empty} is case of an error.
+     * Retrieves an optional input stream from the given resource name.
      *
-     * @param resourceName the resource name to be loaded
+     * @param resourceName the name of the resource to retrieve
+     * @return an optional input stream of the resource, or empty if the resource could not be found or accessed
      */
-    public static Optional<InputStream> optionalUriFrom(@NonNull final String resourceName) {
+    public static Optional<InputStream> optionalUriFrom(final String resourceName) {
+        Objects.requireNonNull(resourceName);
+
         try {
             @Nullable final InputStream resourceAsStream = classLoader().getResourceAsStream(resourceName);
 

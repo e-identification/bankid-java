@@ -1,7 +1,9 @@
 package dev.nicklasw.bankid.client.model;
 
 import dev.nicklasw.bankid.exceptions.BankIdRequirementException;
-import lombok.NonNull;
+
+import java.util.Objects;
+import java.util.StringJoiner;
 
 public final class UserVisibleData extends VisibleData {
 
@@ -12,12 +14,16 @@ public final class UserVisibleData extends VisibleData {
     }
 
     /**
-     * Creates a {@link UserVisibleData} of the given content.
+     * Creates an instance of UserVisibleData with the given content.
      *
-     * @param content must not be {@literal null}, empty or over 40 000 chars.
-     * @throws BankIdRequirementException in case of invalid content.
+     * @param content the content of the UserVisibleData
+     * @return an instance of UserVisibleData
+     * @throws NullPointerException if content is null
+     * @throws BankIdRequirementException if the content is empty or exceeds the maximum length of 40,000 characters
      */
-    public static UserVisibleData of(@NonNull final String content) {
+    public static UserVisibleData of(final String content) {
+        Objects.requireNonNull(content);
+
         return new UserVisibleData(content);
     }
 
@@ -29,5 +35,12 @@ public final class UserVisibleData extends VisibleData {
         if (content.length() > 40_000) {
             throw new BankIdRequirementException("UserVisibleData content cannot exceed 40_000 in length");
         }
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", UserVisibleData.class.getSimpleName() + "[", "]")
+            .add("super='" + super.toString() + "'")
+            .toString();
     }
 }

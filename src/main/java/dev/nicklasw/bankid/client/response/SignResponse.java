@@ -1,15 +1,29 @@
 package dev.nicklasw.bankid.client.response;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Value
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class SignResponse extends OrderResponse {
+import java.util.StringJoiner;
+
+/**
+ * Represents a sign response.
+ */
+public final class SignResponse extends OrderResponse {
+
+    @JsonCreator
+    public SignResponse(
+        @JsonProperty("orderRef") final String orderRef,
+        @JsonProperty("autoStartToken") final String autoStartToken,
+        @JsonProperty("qrStartToken") final String qrStartToken,
+        @JsonProperty("qrStartSecret") final String qrStartSecret) {
+        super(autoStartToken, orderRef, qrStartToken, qrStartSecret);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", SignResponse.class.getSimpleName() + "[", "]")
+            .add("super='" + super.toString() + "'")
+            .toString();
+    }
 
 }

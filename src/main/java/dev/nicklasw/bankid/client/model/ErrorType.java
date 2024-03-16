@@ -1,12 +1,14 @@
 package dev.nicklasw.bankid.client.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import dev.nicklasw.bankid.client.model.serializer.ErrorTypeConverter;
-import lombok.Value;
+import dev.nicklasw.bankid.client.model.enums.ErrorCode;
+import dev.nicklasw.bankid.client.model.serializer.ErrorTypeSerializer;
 
-@Value(staticConstructor = "of")
-@JsonDeserialize(using = ErrorTypeConverter.class)
-public class ErrorType {
-    String codeValue;
-    ErrorCode code;
+@JsonDeserialize(using = ErrorTypeSerializer.class)
+public record ErrorType(String codeValue, ErrorCode code) {
+
+    public static ErrorType of(final String codeValue, final ErrorCode code) {
+        return new ErrorType(codeValue, code);
+    }
+
 }

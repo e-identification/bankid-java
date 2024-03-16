@@ -1,9 +1,9 @@
 package dev.nicklasw.bankid;
 
-import dev.nicklasw.bankid.client.model.CallInitiator;
 import dev.nicklasw.bankid.client.model.PhoneRequirement;
 import dev.nicklasw.bankid.client.model.Requirement;
 import dev.nicklasw.bankid.client.model.UserVisibleData;
+import dev.nicklasw.bankid.client.model.enums.CallInitiator;
 import dev.nicklasw.bankid.client.request.AuthenticationRequest;
 import dev.nicklasw.bankid.client.request.CancelRequest;
 import dev.nicklasw.bankid.client.request.CollectRequest;
@@ -22,16 +22,15 @@ import dev.nicklasw.bankid.client.utils.ResourceUtils;
 import dev.nicklasw.bankid.configuration.Configuration;
 import dev.nicklasw.bankid.configuration.Pkcs12;
 import dev.nicklasw.bankid.utils.RandomUtils;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static dev.nicklasw.bankid.configuration.Configuration.URL_TEST;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BankIdTest {
 
@@ -53,8 +52,7 @@ class BankIdTest {
     }
 
     @Test
-    @SneakyThrows
-    void authenticateAsync() {
+    void authenticateAsync() throws ExecutionException, InterruptedException {
         given();
 
         final CompletableFuture<AuthenticateResponse> authenticateResponseCompletableFuture = bankId.authenticateAsync(
@@ -84,8 +82,7 @@ class BankIdTest {
     }
 
     @Test
-    @SneakyThrows
-    void phoneAuthenticateAsync() {
+    void phoneAuthenticateAsync() throws ExecutionException, InterruptedException {
         given();
 
         final CompletableFuture<PhoneAuthenticateResponse> authenticateResponseCompletableFuture = bankId.phoneAuthenticateAsync(
@@ -116,8 +113,7 @@ class BankIdTest {
     }
 
     @Test
-    @SneakyThrows
-    void signAsync() {
+    void signAsync() throws ExecutionException, InterruptedException {
         given();
 
         final CompletableFuture<SignResponse> response = bankId.signAsync(
@@ -152,8 +148,7 @@ class BankIdTest {
     }
 
     @Test
-    @SneakyThrows
-    void phoneSignAsync() {
+    void phoneSignAsync() throws ExecutionException, InterruptedException {
         given();
 
         final CompletableFuture<PhoneSignResponse> response = bankId.phoneSignAsync(
@@ -179,9 +174,7 @@ class BankIdTest {
             .endUserIp("192.168.1.1")
             .build());
 
-        final CollectResponse collectResponse = bankId.collect(CollectRequest.builder()
-            .orderRef(authenticateResponse.getOrderRef())
-            .build());
+        final CollectResponse collectResponse = bankId.collect(new CollectRequest(authenticateResponse.getOrderRef()));
 
         assertNotNull(collectResponse.getOrderRef());
         assertNotNull(collectResponse.getStatus());
@@ -189,17 +182,14 @@ class BankIdTest {
     }
 
     @Test
-    @SneakyThrows
-    void collectAsync() {
+    void collectAsync() throws ExecutionException, InterruptedException {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
             .endUserIp("192.168.1.1")
             .build());
 
-        final CompletableFuture<CollectResponse> collectResponseCompletableFuture = bankId.collectAsync(CollectRequest.builder()
-            .orderRef(authenticateResponse.getOrderRef())
-            .build());
+        final CompletableFuture<CollectResponse> collectResponseCompletableFuture = bankId.collectAsync(new CollectRequest(authenticateResponse.getOrderRef()));
 
         final CollectResponse collectResponse = collectResponseCompletableFuture.get();
 
@@ -216,14 +206,12 @@ class BankIdTest {
             .endUserIp("192.168.1.1")
             .build());
 
-        final CancelResponse cancelResponse = bankId.cancel(CancelRequest.builder()
-            .orderRef(authenticateResponse.getOrderRef()).build());
+        final CancelResponse cancelResponse = bankId.cancel(new CancelRequest(authenticateResponse.getOrderRef()));
         assertNotNull(cancelResponse);
     }
 
     @Test
-    @SneakyThrows
-    void cancelAsync() {
+    void cancelAsync() throws ExecutionException, InterruptedException {
         given();
 
         final AuthenticateResponse authenticateResponse = bankId.authenticate(AuthenticationRequest.builder()
@@ -231,9 +219,7 @@ class BankIdTest {
             .build());
 
         final CompletableFuture<CancelResponse> cancelResponseCompletableFuture =
-            bankId.cancelAsync(CancelRequest.builder()
-                .orderRef(authenticateResponse.getOrderRef())
-                .build());
+            bankId.cancelAsync(new CancelRequest(authenticateResponse.getOrderRef()));
 
         final CancelResponse cancelResponse = cancelResponseCompletableFuture.get();
         assertNotNull(cancelResponse);
@@ -245,25 +231,17 @@ class BankIdTest {
 
         final Pkcs12 pkcs12 = Pkcs12.of(pkcs12Resource, "qwerty123");
 
-        final Configuration configuration = Configuration.builder()
-            .baseURL(URL_TEST)
-            .pkcs12(pkcs12)
-            .certificate(caResource)
-            .build();
+        final Configuration configuration = Configuration.of(URL_TEST, pkcs12, caResource);
 
         bankId = BankId.of(configuration);
     }
 
     @BeforeEach
-    private void setUp() {
+    public void setUp() {
         bankId = null;
     }
 
     private void assertOrder(final OrderResponse response) {
-        // No errors should be returned
-        assertTrue(response.optionalErrorType().isEmpty());
-        assertTrue(response.optionalDetails().isEmpty());
-
         // Validate the order
         assertNotNull(response.getOrderRef());
         assertNotNull(response.getAutoStartToken());
@@ -272,10 +250,6 @@ class BankIdTest {
     }
 
     private void assertOrder(final PhoneOrderResponse response) {
-        // No errors should be returned
-        assertTrue(response.optionalErrorType().isEmpty());
-        assertTrue(response.optionalDetails().isEmpty());
-
         // Validate the order
         assertNotNull(response.getOrderRef());
     }

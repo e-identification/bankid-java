@@ -1,12 +1,17 @@
 package dev.nicklasw.bankid.client.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import dev.nicklasw.bankid.client.model.serializer.HintTypeConverter;
-import lombok.Value;
+import dev.nicklasw.bankid.client.model.enums.HintCode;
+import dev.nicklasw.bankid.client.model.serializer.HintTypeSerializer;
 
-@Value(staticConstructor = "of")
-@JsonDeserialize(using = HintTypeConverter.class)
-public class HintType {
-    String codeValue;
-    HintCode code;
+/**
+ * Represents a hint type that might be encountered from the BankID API.
+ */
+@JsonDeserialize(using = HintTypeSerializer.class)
+public record HintType(String codeValue, HintCode code) {
+
+    public static HintType of(final String codeValue, final HintCode code) {
+        return new HintType(codeValue, code);
+    }
+
 }

@@ -1,18 +1,25 @@
 package dev.nicklasw.bankid.client.request;
 
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
+import java.util.Objects;
 
-@Value
-@Builder
-public class CollectRequest implements Request {
+/**
+ * Request to collect the result of a sign or auth order using orderRef as reference.
+ * RP should keep on calling collect every two seconds if status is pending.
+ * RP must abort if status indicates failed. The user identity is returned when complete.
+ *
+ * @param orderRef The orderRef from the response from authentication or sign.
+ */
+public record CollectRequest(String orderRef) implements Request {
 
     /**
-     * The orderRef from the response from authentication or sign.
+     * Creates a {@link CollectRequest}.
+     *
+     * @param orderRef The orderRef from the response from authentication or sign. Must not be {@code null}
+     * @throws NullPointerException if {@code orderRef} is {@code null}
      */
-    @NonNull
-    String orderRef;
+    public CollectRequest(final String orderRef) {
+        this.orderRef = Objects.requireNonNull(orderRef);
+    }
 
     @Override
     public String getUri() {

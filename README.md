@@ -1,6 +1,6 @@
-[![Continuous Integration](https://github.com/nicklaswallgren/bankid-java-sdk/workflows/ci/badge.svg)](https://github.com/nicklaswallgren/bankid-java-sdk/actions)
-[![License](https://img.shields.io/github/license/nicklaswallgren/bankid-java-sdk)](https://github.com/nicklaswallgren/bankid-java-sdk/blob/master/LICENSE)
-[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/NicklasWallgren/bankid-java-sdk.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NicklasWallgren/bankid-java-sdk/context:java)
+[![Continuous Integration](https://github.com/e-identification/bankid-java-sdk/workflows/ci/badge.svg)](https://github.com/e-identification/bankid-java-sdk/actions)
+[![License](https://img.shields.io/github/license/e-identification/bankid-java-sdk)](https://github.com/e-identification/bankid-java-sdk/blob/master/LICENSE)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/e-identification/bankid-java-sdk.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/e-identification/bankid-java-sdk/context:java)
 
 # BankID SDK
 
@@ -8,7 +8,7 @@ SDK to interact with BankID API. It includes support for all the v6.0 features. 
 some [examples that may be useful](./examples).
 
 ## Documentation
-See the project's [Javadoc](https://nicklaswallgren.github.io/bankid-java-sdk/).
+See the project's [Javadoc](https://e-identification.github.io/bankid-java-sdk/).
 
 ## Installation
 

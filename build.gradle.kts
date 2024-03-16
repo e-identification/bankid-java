@@ -1,19 +1,18 @@
 plugins {
     id("java")
-    id("io.freefair.lombok") version "8.3"
-
     id("checkstyle-conventions")
     id("spotbugs-conventions")
     id("errorprone-conventions")
     id("test-conventions")
+    id("publish-conventions")
 }
 
 group = "dev.nicklasw"
-version = "0.14.0-SNAPSHOT"
+version = "0.15.0-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -21,14 +20,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
-
     implementation(libs.jackson.core.databind)
-    implementation(libs.findbugs.annotations)
-    implementation(libs.mccue.jsr305)
     implementation(libs.jspecify)
-    implementation(libs.findbugs.annotations)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
@@ -36,6 +29,20 @@ dependencies {
     testImplementation(libs.mockito.inline)
 
     testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks {
+    javadoc {
+        options {
+            // Suppress the warnings
+            (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+        }
+    }
 }
 
 tasks.register("code-quality") {
