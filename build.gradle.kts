@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "dev.eidentification"
-version = "0.15.0-SNAPSHOT"
+version = "0.15.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -31,11 +31,6 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
 tasks {
     javadoc {
         options {
@@ -43,6 +38,10 @@ tasks {
             (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
         }
     }
+}
+
+tasks.withType<Javadoc>().configureEach {
+    setDestinationDir(layout.projectDirectory.file("docs/").asFile)
 }
 
 tasks.register("code-quality") {

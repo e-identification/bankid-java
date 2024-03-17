@@ -1,59 +1,42 @@
-import java.net.URI
-
 plugins {
     id("java-library")
     id("java-gradle-plugin")
-    id("maven-publish")
-    id("signing")
+    id("com.vanniktech.maven.publish")
 }
 
-tasks.withType<Javadoc>().configureEach {
-    setDestinationDir(layout.projectDirectory.file("docs/").asFile)
+afterEvaluate {
+  tasks.named("generateMetadataFileForPluginMavenPublication") {
+    dependsOn("plainJavadocJar")
+  }
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "ossrh"
-            url = URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = findProperty("ossrhUsername").toString()
-                password = findProperty("ossrhPassword").toString()
-            }
-        }
+mavenPublishing {
+  coordinates("dev.eidentification", "bankid-sdk", version = version.toString())
+
+  signAllPublications()
+
+  pom {
+    name.set("BankID SDK")
+    description.set("A SDK to interact with the BankID API.")
+    url.set("https://github.com/NicklasWallgren/bankid-java")
+    licenses {
+      license {
+        name.set("MIT Licence")
+        url.set("https://github.com/NicklasWallgren/bankid-java/blob/master/LICENSE")
+        distribution.set("https://github.com/NicklasWallgren/bankid-java/blob/master/LICENSE")
+      }
     }
-
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            pom {
-                name = "BankID SDK"
-                artifactId = "bankid-sdk"
-                description = "A SDK to interact with the BankID API"
-                url = "https://github.com/NicklasWallgren/bankid-java"
-                scm {
-                    connection = "scm:git:git://github.com/NicklasWallgren/bankid-java.git"
-                    developerConnection = "scm:git:ssh://github.com/NicklasWallgren/bankid-java.git"
-                    url = "https://github.com/NicklasWallgren/bankid-java"
-                }
-                licenses {
-                    license {
-                        name = "MIT Licence"
-                        url = "https://github.com/NicklasWallgren/bankid-java/blob/master/LICENSE"
-                    }
-                }
-                developers {
-                    developer {
-                        id = "nicklas"
-                        name = "NicklasWallgren"
-                        email = "nicklas.wallgren@gmail.com"
-                    }
-                }
-            }
-        }
+    developers {
+      developer {
+        id.set("nicklas")
+        name.set("NicklasWallgren")
+        url.set("nicklas.wallgren@gmail.com")
+      }
     }
-}
-
-signing {
-    sign(publishing.publications["maven"])
+    scm {
+      url.set("https://github.com/NicklasWallgren/bankid-java")
+      connection.set("scm:git:git://github.com/NicklasWallgren/bankid-java.git")
+      developerConnection.set("scm:git:ssh://github.com/NicklasWallgren/bankid-java.git")
+    }
+  }
 }
