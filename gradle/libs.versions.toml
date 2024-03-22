@@ -1,7 +1,7 @@
 [versions]
 jackson = "2.17.0"
 jspecify = "0.3.0"
-junit-jupiter = "5.10.1"
+junit-jupiter = "5.10.2"
 mockito-jupiter = "5.11.0"
 mockito-inline = "5.2.0"
 
