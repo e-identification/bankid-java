@@ -1,5 +1,7 @@
 package dev.eidentification.bankid.exceptions;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.http.HttpResponse;
 
 /**
@@ -18,8 +20,14 @@ public final class BankIdApiUnexpectedResponseException extends BankIdException 
     private final HttpResponse.ResponseInfo responseInfo;
     private final String responseBody;
 
-    private BankIdApiUnexpectedResponseException(final HttpResponse.ResponseInfo responseInfo, final String responseBody, final Throwable cause) {
-        super(cause);
+    private BankIdApiUnexpectedResponseException(final HttpResponse.ResponseInfo responseInfo, final String responseBody) {
+        super("BankId API returned an unexpected response. Body: " + responseBody);
+        this.responseInfo = responseInfo;
+        this.responseBody = responseBody;
+    }
+
+    private BankIdApiUnexpectedResponseException(final HttpResponse.ResponseInfo responseInfo, final String responseBody, @Nullable final Throwable cause) {
+        super("BankId API returned an unexpected response. Body: " + responseBody, cause);
         this.responseInfo = responseInfo;
         this.responseBody = responseBody;
     }
@@ -32,8 +40,20 @@ public final class BankIdApiUnexpectedResponseException extends BankIdException 
      * @param cause        The cause of the exception.
      * @return A new instance of BankIdApiUnexpectedResponseException.
      */
-    public static BankIdApiUnexpectedResponseException of(final HttpResponse.ResponseInfo responseInfo, final String responseBody, final Throwable cause) {
+    public static BankIdApiUnexpectedResponseException of(final HttpResponse.ResponseInfo responseInfo, final String responseBody,
+                                                          @Nullable final Throwable cause) {
         return new BankIdApiUnexpectedResponseException(responseInfo, responseBody, cause);
+    }
+
+    /**
+     * Creates a new instance of BankIdApiUnexpectedResponseException.
+     *
+     * @param responseInfo The response information associated with the exception.
+     * @param responseBody The response body associated with the exception.
+     * @return A new instance of BankIdApiUnexpectedResponseException.
+     */
+    public static BankIdApiUnexpectedResponseException of(final HttpResponse.ResponseInfo responseInfo, final String responseBody) {
+        return new BankIdApiUnexpectedResponseException(responseInfo, responseBody);
     }
 
     /**
