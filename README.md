@@ -1,6 +1,5 @@
 [![Continuous Integration](https://github.com/e-identification/bankid-java/workflows/ci/badge.svg)](https://github.com/e-identification/bankid-java/actions)
 [![License](https://img.shields.io/github/license/e-identification/bankid-java)](https://github.com/e-identification/bankid-java/blob/master/LICENSE)
-[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/e-identification/bankid-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/e-identification/bankid-java/context:java)
 
 # BankID SDK
 
@@ -21,14 +20,14 @@ The artifact is available through Maven Central via Sonatype.
 <dependency>
     <groupId>dev.eidentification</groupId>
     <artifactId>bankid-sdk</artifactId>
-    <version>0.15.0</version>
+    <version>0.16.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```
-implementation 'dev.eidentification:bankid-sdk:0.15.0'
+implementation 'dev.eidentification:bankid-sdk:0.16.0'
 ```
 
 ## Changelog
