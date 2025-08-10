@@ -1,15 +1,16 @@
 package dev.eidentification.bankid.internal.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.eidentification.bankid.internal.annotations.Internal;
 import dev.eidentification.bankid.client.response.ErrorResponse;
 import dev.eidentification.bankid.client.response.Response;
 import dev.eidentification.bankid.exceptions.BankIdApiErrorException;
 import dev.eidentification.bankid.exceptions.BankIdApiUnexpectedResponseException;
+import dev.eidentification.bankid.internal.annotations.Internal;
 
 import java.io.InputStream;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @Internal
 public class JsonBodyHandler<R extends Response, E extends ErrorResponse> implements HttpResponse.BodyHandler<R> {
@@ -41,6 +42,16 @@ public class JsonBodyHandler<R extends Response, E extends ErrorResponse> implem
             return HttpResponse.BodySubscribers.mapping(upstream, inputStream -> inputStreamTo(responseClazz, responseInfo, inputStream));
         }
 
+        final Optional<String> optionalContentType = responseInfo.headers()
+            .firstValue("Content-Type")
+            .map(String::toLowerCase);
+
+        if (optionalContentType.isEmpty() || !optionalContentType.get().contains("application/json")) {
+            return HttpResponse.BodySubscribers.mapping(upstream, inputStream -> {
+                throw BankIdApiUnexpectedResponseException.of(responseInfo, inputStreamToString(responseInfo, inputStream));
+            });
+        }
+
         return HttpResponse.BodySubscribers.mapping(upstream, inputStream -> {
             throw BankIdApiErrorException.of(inputStreamTo(errorResponseClazz, responseInfo, inputStream));
         });
@@ -58,4 +69,13 @@ public class JsonBodyHandler<R extends Response, E extends ErrorResponse> implem
         }
     }
 
+    private static String inputStreamToString(final HttpResponse.ResponseInfo responseInfo, final InputStream inputStream) {
+        String body = "";
+
+        try (final InputStream stream = inputStream) {
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (final Exception e) {
+            throw BankIdApiUnexpectedResponseException.of(responseInfo, body, e);
+        }
+    }
 }
