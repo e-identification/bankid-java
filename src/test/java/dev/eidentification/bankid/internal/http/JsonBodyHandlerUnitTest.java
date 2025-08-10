@@ -164,9 +164,13 @@ class JsonBodyHandlerUnitTest extends UnitTest {
 
     private static class NoopSubscription implements java.util.concurrent.Flow.Subscription {
         @Override
-        public void request(long n) { /* no-op */ }
+        public void request(final long n) {
+            // no-op
+        }
 
         @Override
-        public void cancel() { /* no-op */ }
+        public void cancel() {
+            // no-op
+        }
     }
 }
